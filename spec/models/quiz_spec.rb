@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Quiz, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "not valid if not tied to user" do
+    expect(FactoryGirl.build(:quiz)).to be_valid
+  end
 end

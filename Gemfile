@@ -28,7 +28,9 @@ gem 'spring',      group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
+gem 'devise'
+gem 'faker'
+gem 'factory_girl_rails'
 
 gem "capybara", group: [:development, :test]
 gem "capybara-webkit", group: [:development, :test]

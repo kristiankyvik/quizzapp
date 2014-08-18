@@ -4,6 +4,7 @@ class CreateQuestions < ActiveRecord::Migration
       t.string :title
       t.string :song
       t.text :explanation
+      t.integer :quiz_id
       t.timestamps
     end
   end
