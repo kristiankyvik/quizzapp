@@ -1,11 +1,12 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe 'visiting the homepage' do
+describe 'visiting the homepage', :type => :feature do
   before do
     visit '/'
   end
 
   it 'should have a body' do
-    page.should have_css('body')    
+    page.has_css?("exist")
+    page.should have_content('ola q ase')    
   end
 end
