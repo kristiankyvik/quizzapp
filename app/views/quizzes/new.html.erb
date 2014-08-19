@@ -1,0 +1,31 @@
+
+
+    <%= simple_form_for ([@user, @quiz]), :controller => :questions, :action => :create, :method => :post  do |f| %>
+    <%=f.error_notification %>
+    <%=f.simple_fields_for :questions, @quiz.questions.build do |q| %>
+      <%= q.input :title, label: "Question content" %>
+      <%= q.input :song, label: "Question Song" %>
+      <%= q.input :explanation, label: "Question Explanation" %>
+
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, label: "Answer content" %>
+        <%=a.input :corect, :label => false, :as => :boolean, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, label: "Answer content" %>
+        <%=a.input :corect, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, label: "Answer content" %>
+        <%=a.input :corect, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, label: "Answer content" %>
+        <%=a.input :corect, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+
+    <% end %>
+    <%= f.button :submit %>
+    <% end %>
+  
+  

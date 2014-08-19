@@ -4,4 +4,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :quizzes
+  accepts_nested_attributes_for :quizzes
+
+
+  
+  
+
 end

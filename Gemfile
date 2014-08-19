@@ -33,6 +33,7 @@ gem 'devise'
 gem 'faker'
 gem 'factory_girl_rails'
 gem 'pry'
+gem 'simple_form'
 
 gem "capybara", group: [:development, :test]
 gem "capybara-webkit", group: [:development, :test]
