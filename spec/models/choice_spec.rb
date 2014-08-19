@@ -14,5 +14,4 @@ RSpec.describe Choice, :type => :model do
     expect(FactoryGirl.build(:choice, correct: nil)).not_to be_valid
   end
 
-
 end

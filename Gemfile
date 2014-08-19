@@ -31,6 +31,7 @@ gem 'spring',      group: :development
 gem 'devise'
 gem 'faker'
 gem 'factory_girl_rails'
+gem 'pry'
 
 gem "capybara", group: [:development, :test]
 gem "capybara-webkit", group: [:development, :test]
