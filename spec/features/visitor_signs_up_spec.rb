@@ -35,5 +35,4 @@ feature 'Visitor logs out' do
     sign_in_with 'valid@example.com', 'password12345'
     expect(page).to have_content('Sign up')
   end
-
 end
