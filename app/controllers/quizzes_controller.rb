@@ -17,6 +17,10 @@ class QuizzesController < ApplicationController
     redirect_to :controller => 'questions', :action => 'index' ,:quiz_id => quiz.id
   end
 
+  def show
+    @quiz = Quiz.find(params[:id])
+  end
+
   private
   def permitted_params
     params.require(:quiz).permit(:title)
