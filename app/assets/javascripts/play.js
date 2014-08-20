@@ -49,7 +49,12 @@ var currentquestion = 0,
       $('.choice').on('click', function () {
           clearAlert()
           choice = $(this).attr('data-index');
-          if (quiz[currentquestion]['choices'][choice].text === quiz[currentquestion]['correct']) {
+          console.log(choice);
+          console.log(currentquestion);
+          console.log(quiz[currentquestion]['choices'][choice].title + "sasasa" + quiz[currentquestion]['choices']['correct']);
+
+
+          if (quiz[currentquestion]['choices'][choice].correct) {
               $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
               score++;
           } else {
