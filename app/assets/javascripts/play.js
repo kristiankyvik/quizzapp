@@ -1,7 +1,7 @@
 var quiztitle ;
 var currentquestion = 0,
     score = 0,
-    submt = true,
+    cansubmit = true,
     quiz,
     picked;
 
@@ -11,156 +11,90 @@ var currentquestion = 0,
     function htmlEncode(value) {
         return $(document.createElement('div')).text(value).html();
     }
-    var loadAudio = function (link){
-      var response=null;
-      var audio=document.getElementById('audio');
-      var xhr =new XMLHttpRequest();
-      xhr.open('GET', "https://api.spotify.com/v1/tracks/"+link);
-      xhr.setRequestHeader('Accept', 'application/json'); //why accept
 
-      xhr.onreadystatechange = function () {
-          if (this.readyState === 4) {
-            if (this.status === 200) {
-              response = JSON.parse(this.response);
-              audio.setAttribute('src', response.preview_url);
-              audio.play();
-            }
-          }
-        };
-        xhr.send();
+    var loadAudio = function (link){
+      $.ajax({
+              url: "https://api.spotify.com/v1/tracks/"+link,
+              type: 'GET',
+              crossDomain : true,
+              xhrFields: {
+          },
+              success: function(data) {
+                audio.setAttribute('src', data.preview_url);
+                audio.play();
+              }
+          })
     };
 
-
-    function addChoices(choices) {
-        if (typeof choices !== "undefined" && $.type(choices) == "array") {
-            $('#choice-block').empty();
-            for (var i = 0; i < choices.length; i++) {
-                $(document.createElement('li')).addClass('choice choice-box').attr('data-index', i).text(choices[i].title).appendTo('#choice-block');
-            }
-        }
+    function setupLayout () {
+      $('<h1/>').text(quiztitle).appendTo('#frame');
+      $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
+      $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
+      $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
+      $('<p/>').addClass('explanation').attr('id', 'explanation').html('&nbsp;').appendTo('#frame');
+      $('<ul/>').attr('id', 'choice-block').appendTo('#frame');
+      addChoices(quiz[0]['choices']);
+      $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
+      setupButtons();   
     }
 
-    function nextQuestion() {
-        submt = true;
-        $('#explanation').empty();
-        loadAudio(quiz[currentquestion]['song']);
-        $('#question').text(quiz[currentquestion]['question']);
-        $('#pager').text('Question ' + Number(currentquestion + 1) + ' of ' + quiz.length);
-        if (quiz[currentquestion].hasOwnProperty('image') && quiz[currentquestion]['image'] != "") {
-            if ($('#question-image').length == 0) {
-                $(document.createElement('img')).addClass('question-image').attr('id', 'question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question'])).insertAfter('#question');
-            } else {
-                $('#question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question']));
-            }
-        } else {
-            $('#question-image').remove();
-        }
-        addChoices(quiz[currentquestion]['choices']);
-        setupButtons();
+    function addChoices(choices) { 
+      $('#choice-block').empty();
+      for (var i = 0; i < choices.length; i++) {
+          $('<li/>').addClass('choice choice-box').attr('data-index', i).text(choices[i].title).appendTo('#choice-block');
+      }
     }
 
+    function setupButtons() {
+      $('.choice').on('click', function () {
+          choice = $(this).attr('data-index');
+          if (quiz[currentquestion]['choices'][choice].text === quiz[currentquestion]['correct']) {
+              $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
+              score++;
+          } else {
+          $('#explanation').html('<strong>Incorrect.</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
+          }
+          $("#nextButton").show();
+          if (cansubmit) {
+              cansubmit = false;
+              $("#nextButton").click(function(){
+                   $('.choice').off('click');
+                  $(this).off('click');
+                  upCounter(choice);
+              });
+          }
+      })
+    }
 
-    function processQuestion(choice) {
+    function upCounter(choice) {
         currentquestion++;
-        $("#submitbutton").hide();
+        $("#nextButton").hide();
             if (currentquestion == quiz.length) {
                 endQuiz();
             } else {     
                 nextQuestion();
             }
     }
-   function setupButtons() {
-        $('.choice').on('mouseover', function () {
-            $(this).css({
-                'background-color': '#e1e1e1'
-            });
-        });
-        $('.choice').on('mouseout', function () {
-            $(this).css({
-                'background-color': '#fff'
-            });
-        })
-        $('.choice').on('click', function () {
-            choice = $(this).attr('data-index');
-            $('.choice').removeAttr('style').off('mouseout mouseover');
-            $(this).css({
-                'border-color': '#222',
-                'font-weight': 700,
-                'background-color': '#c1c1c1'
-            });
-            if (quiz[currentquestion]['choices'][choice].text === quiz[currentquestion]['correct']) {
 
-            $('.choice').eq(choice).css({
-                'background-color': '#50D943'
-            });
-            $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
-            score++;
-        } else {
-            $('.choice').eq(choice).css({
-                'background-color': '#D92623'
-            });
-            $('#explanation').html('<strong>Incorrect.</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
-        }
-               $("#submitbutton").show();
-            if (submt) {
-                submt = false;
-                $('#submitbutton').css({
-                    'color': '#000'
-
-                });
-                $("#submitbutton").click(function(){
-                     $('.choice').off('click');
-                    $(this).off('click');
-                    processQuestion(choice);
-                });
-            }
-        })
+    function nextQuestion() {
+        cansubmit = true;
+        $('#explanation').empty();
+        loadAudio(quiz[currentquestion]['song']);
+        $('#question').text(quiz[currentquestion]['question']);
+        $('#questionCounterBanner').text('Question ' + Number(currentquestion + 1) + ' of ' + quiz.length);  
+        $('#question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question']));
+        addChoices(quiz[currentquestion]['choices']);
+        setupButtons();
     }
-
 
     function endQuiz() {
         $('#explanation').empty();
         $('#question').empty();
         $('#choice-block').empty();
-        $('#submitbutton').remove();
+        $('#nextButton').remove();
         $('#question').text("You got " + score + " out of " + quiz.length + " correct.");
-        $(document.createElement('h2')).css({
-            'text-align': 'center',
-            'font-size': '4em'
-        }).text(Math.round(score / quiz.length * 100) + '%').insertAfter('#question');
+        $('h2').text(Math.round(score / quiz.length * 100) + '%').insertAfter('#question');
     }
-
-
-
-    function setupLayout () {
-        $(document.createElement('h1')).text(quiztitle).appendTo('#frame');
-        if (typeof quiz !== "undefined" && $.type(quiz) === "array") {
-                //add pager
-                $(document.createElement('p')).addClass('pager').attr('id', 'pager').text('Question 1 of ' + quiz.length).appendTo('#frame');
-                //add first question
-                $(document.createElement('h2')).addClass('question').attr('id', 'question').text(quiz[0]['question']).appendTo('#frame');
-                //add image if present
-                if (quiz[0].hasOwnProperty('image') && quiz[0]['image'] != "") {
-                    $(document.createElement('img')).addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
-                }
-                $(document.createElement('p')).addClass('explanation').attr('id', 'explanation').html('&nbsp;').appendTo('#frame');
-
-                //questions holder
-                $(document.createElement('ul')).attr('id', 'choice-block').appendTo('#frame');
-
-                //add choices
-                addChoices(quiz[0]['choices']);
-
-                //add submit button
-                $(document.createElement('div')).addClass('choice-box').attr('id', 'submitbutton').text('Check Answer').appendTo('#frame');
-
-              $("#submitbutton").hide();
-                setupButtons();
-
-              loadAudio(quiz[0]['song']);
-            }
-    }
-
 
     function init() {
         $.ajax({
@@ -171,13 +105,13 @@ var currentquestion = 0,
               withCredentials: true
           },
               success: function(data) {
-                quiztitle = Object.keys(data);
-                quiz = data[quiztitle];
-                console.log(quiz);
               }
-          }).done(function() {
-              setupLayout();
-            
+          }).done(function(data) {
+            quiztitle = Object.keys(data);
+            quiz = data[Object.keys(data)];
+            console.log(quiz)
+            setupLayout();
+            loadAudio(quiz[0].song);
           });
 
     }

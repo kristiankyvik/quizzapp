@@ -37,8 +37,8 @@ gem 'pry'
 gem 'simple_form'
 
 gem "capybara", group: [:development, :test]
-gem "capybara-webkit", group: [:development, :test]
 gem "database_cleaner", group: [:development, :test]
+gem 'poltergeist'
 gem "jquery-rails"
 gem "rspec-rails", ">= 2.0.1", group: [:development, :test]
 gem "haml", ">= 3.0.0"
