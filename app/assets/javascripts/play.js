@@ -3,8 +3,8 @@ var currentquestion = 0,
     score = 0,
     cansubmit = true,
     quiz,
-    picked;
-
+    picked,
+    timer;
 
     $(document).ready(function(){
 
@@ -47,6 +47,7 @@ var currentquestion = 0,
 
     function setupButtons() {
       $('.choice').on('click', function () {
+          clearAlert()
           choice = $(this).attr('data-index');
           if (quiz[currentquestion]['choices'][choice].text === quiz[currentquestion]['correct']) {
               $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
@@ -60,13 +61,29 @@ var currentquestion = 0,
               $("#nextButton").click(function(){
                    $('.choice').off('click');
                   $(this).off('click');
-                  upCounter(choice);
+                  upCounter();
               });
           }
       })
     }
 
-    function upCounter(choice) {
+    function showTimeoutBox () {
+      $('#myModal').modal({show:true})
+      clearAlert();
+      $("#next-question-modal").click(function(){
+          console.log("clickkkk modall")
+          $('.choice').off('click');
+          $(this).off('click');
+          upCounter();
+      });
+    }
+
+    function clearAlert() {
+      window.clearTimeout(timer);
+      console.log("alert cleared!!!");
+    }
+
+    function upCounter() {
         currentquestion++;
         $("#nextButton").hide();
             if (currentquestion == quiz.length) {
@@ -85,6 +102,7 @@ var currentquestion = 0,
         $('#question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question']));
         addChoices(quiz[currentquestion]['choices']);
         setupButtons();
+        timer = window.setTimeout(showTimeoutBox, 8000)
     }
 
     function endQuiz() {
@@ -112,6 +130,7 @@ var currentquestion = 0,
             console.log(quiz)
             setupLayout();
             loadAudio(quiz[0].song);
+            timer = window.setTimeout(showTimeoutBox, 8000);
           });
 
     }

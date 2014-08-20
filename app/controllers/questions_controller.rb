@@ -8,7 +8,6 @@ class QuestionsController < ApplicationController
 
   def create
     question = Quiz.find(params[:quiz_id]).questions.create(permitted_params)
-    binding.pry
     question.save
     redirect_to :controller => :questions, :action => :index
   end
