@@ -1,21 +1,88 @@
-<div class="container">
+  
+  <style type="text/css">
+        li {
+        inline;
+      }
+          /* show the move cursor as the user moves the mouse over the panel header.*/
+      #draggablePanelList .panel-heading {
+          cursor: move;
+      }
 
-<div class="row">
-  <div class="col-md-3">
-    <h1>chose song </h1>
+      .clickable
+      {
+          cursor: pointer;
+      }
+      #guapa{
+         background-color: #e74c3c; 
+      }
+
+      .panel-heading span
+      {  
+          margin-top: -23px;
+          font-size: 15px;
+          margin-right: -9px;
+      }
+      a.clickable { color: inherit; }
+      a.clickable:hover { text-decoration:none; }
+      
+  </style>
+    <div class="page-header text-center">
+      <h1>Current Questions</h1>
+    </div>
+  <div class="container">
+    <div class="col-md-5">
+    <% @questions.each do |question| %>
+      <div class="row">
+              <div class="panel panel-primary" >
+                  <div class="panel-heading" id="guapa">
+                    <h4 style="display: inline" >Question</h4><h5 style="display: inline" > : <%= question.title %>
+                      <h3 class="panel-title"> </h3>
+                      <span class="pull-right clickable">EDIT</span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
+                      <div class="media">
+                          <a class="pull-left" href="#" target="_parent">
+                          <img alt="image" class="img-responsive" src="//placehold.it/110X110/565656/eee"></a>
+                              <h3 class="media-heading">
+                                <%= question.title %> </h3>
+                              <ul class="list">
+                                <% question.choices.each do |choice| %>
+                                  <li><%= choice.title %></li>
+                                <% end %>
+                              </ul>
+                       
+                      </div>
+                  </div><!-- End Listing-->
+
+                    
+                  </div>
+          </div>
+      </div>
+  <% end %>
+
+</div>
+
+<div class="col-md-1"></div>
+
+<div class="col-md-4">
+    <h1>To add a new question:</h1>
+    <h3>#1.choose a song: </h3>
+    <div class="row">
+      
+    </div>
+    
     <form id= "search">
       <input type="text" name="searchItem"  id= "search"/>
       <button type="submit">Load track</button>
     </form>
     <ul id="results">
     </ul>
-  </div>
-  <div class="col-md-4">
-    <h1>chosen song:</h1>
-    <h3 id="chosenSong"></h3>
-  </div>
-  <div class="col-md-4">
-    <h1>make the question</h1>
+ 
+    <h3>chosen song:</h3>
+    <h5 id="chosenSong"></h5>
+
+    <h3>make the question</h3>
     <%= simple_form_for ([@user, @quiz, @question]), :controller => :questions, :action => :create, :method => :post, :html => {:class => 'form'}  do |q| %>
     <div class="form-group">
     <%=q.error_notification %>
@@ -40,17 +107,20 @@
       <% end %>
 
     <%= q.button :submit %>
-    <div>
+    <div><!-- group -->
     <% end %>
+  </div> 
   </div>
-  </div>
+</div><!-- container -->
 
 
-</div>
 
 
 <% content_for :head do %>
   <script type="text/javascript">
+    <%= render :partial => "shared/init_accordion" %>
     <%= render :partial => "shared/form_logic" %>
+    <%= render :partial => "shared/order_questions" %>
+
   </script>
 <% end %>

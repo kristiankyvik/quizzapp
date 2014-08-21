@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     @user = User.find(params[:user_id])
     @question = Question.new
+    @questions = @quiz.questions
   end
 
   def create

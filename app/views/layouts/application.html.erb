@@ -16,15 +16,17 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <% if user_signed_in? %>
-        <p class="navbar-text pull-right">Logged in as <strong><%= current_user.email %></strong></p> 
-        <li class="active"> <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></strong></li>
+        <ul class="nav navbar-nav navbar-right">
+          <p class="navbar-text">Logged in as <strong><%= current_user.email %></strong></p> 
+          <li class="active"> <%= link_to "Logout", destroy_user_session_path, method: :get, :class => 'navbar-link'  %></strong></li>
+          <li><a href=<%= user_quizzes_path(current_user) %>>Profile</a></li>
+        </ul>
         <% else %>
         <li class="active pull-right"> <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %></li>
         <li class="active pull-right"> <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></strong></li>
         <% end %>
-
       </ul>
-      
+
       </div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
