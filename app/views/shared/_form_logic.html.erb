@@ -1,3 +1,5 @@
+var artist;
+var lista_names;
 
 var loadSearch=function(link){
   var xhr =new XMLHttpRequest();
@@ -7,7 +9,15 @@ var loadSearch=function(link){
       if (this.readyState === 4) {
         if (this.status === 200) {
           response = JSON.parse(this.response);
-          console.log(response);
+          lista = response.tracks.items;
+          console.log(lista);
+          lista_names = $.map( lista, function( plump ) {
+            return plump.artists;
+          });
+
+          lista_names = $.map( lista, function( plump ) {
+            return plump.name;
+          }).slice(5, 9);
           putResults(response.tracks.items);
           var results=document.querySelector("#results");
           
@@ -19,11 +29,12 @@ var loadSearch=function(link){
               console.log("link clicked")
               selected=evt.target.parentNode;
               var name = $(selected).find('.song')[0].innerHTML;
-              console.log(name);
+              artist = $(selected).find('.artist')[0].innerHTML;
               var field = $("#question_song")[0];
               field.value = selected.id;
               document.getElementById("chosenSong").innerHTML = name;
-
+              $('#the_correct_answer')[0].value = name;
+              document.getElementById('results').innerHTML = '';
           });
         }
       }
@@ -73,13 +84,26 @@ var putResults=function(object){
     var a=document.createElement("a");
     artist.className="artist";
     song.className="song";
-    artist.textContent=object[key].artists[0].name + " - ";
-    song.textContent=object[key].name;
+    artist.textContent= " by " + object[key].artists[0].name;
+    song.textContent= object[key].name;
     a.id=object[key].id;
-    a.appendChild(artist);
     a.appendChild(song);
+    a.appendChild(artist);
     li.appendChild(a);
     ul.appendChild(li);
   }
 
 }
+
+$("#lazy_button").click( function(){
+  console.log("hello");
+  var a1 = lista_names[0];
+  var a2 = lista_names[1];
+  var a3 = lista_names[2];
+  console.log(lista_names)
+  $("#question_id_1")[0].value = a1;
+  $("#question_id_2")[0].value = a2;
+  $("#question_id_3")[0].value = a3;
+  
+});
+

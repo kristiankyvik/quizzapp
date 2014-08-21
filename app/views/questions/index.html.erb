@@ -3,11 +3,12 @@
         li {
         inline;
       }
-          /* show the move cursor as the user moves the mouse over the panel header.*/
+      .panel {
+          border: 0;
+      }
       #draggablePanelList .panel-heading {
           cursor: move;
       }
-
       .clickable
       {
           cursor: pointer;
@@ -15,29 +16,30 @@
       #guapa{
          background-color: #e74c3c; 
       }
-
       .panel-heading span
       {  
-          margin-top: -23px;
+          margin-top: -13px;
           font-size: 15px;
           margin-right: -9px;
       }
       a.clickable { color: inherit; }
       a.clickable:hover { text-decoration:none; }
-      
+      #chosenSong{
+        font-size: 13px;
+
+      }
   </style>
-    <div class="page-header text-center">
-      <h1>Current Questions</h1>
-    </div>
+
   <div class="container">
     <div class="col-md-5">
     <% @questions.each do |question| %>
       <div class="row">
               <div class="panel panel-primary" >
                   <div class="panel-heading" id="guapa">
+
                     <h4 style="display: inline" >Question</h4><h5 style="display: inline" > : <%= question.title %>
                       <h3 class="panel-title"> </h3>
-                      <span class="pull-right clickable">EDIT</span>
+                      <span class="pull-right clickable">show</span>
                   </div>
                   <div class="panel-body">
                     <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
@@ -47,11 +49,12 @@
                               <h3 class="media-heading">
                                 <%= question.title %> </h3>
                               <ul class="list">
+                                <% count_choice = 0 %>
                                 <% question.choices.each do |choice| %>
-                                  <li><%= choice.title %></li>
+                                  <li> Q<%= count_choice %>: <%= choice.title %></li>
+                                  <% count_choice = count_choice + 1 %>
                                 <% end %>
                               </ul>
-                       
                       </div>
                   </div><!-- End Listing-->
 
@@ -66,55 +69,46 @@
 <div class="col-md-1"></div>
 
 <div class="col-md-4">
-    <h1>To add a new question:</h1>
-    <h3>#1.choose a song: </h3>
-    <div class="row">
-      
-    </div>
-    
+    <h2>To add a new question:</h2>
+    <h3>#1. choose a song: <span id="chosenSong"></span> </h3>    
     <form id= "search">
       <input type="text" name="searchItem"  id= "search"/>
-      <button type="submit">Load track</button>
+      <button type="submit">load track</button>
     </form>
     <ul id="results">
     </ul>
- 
-    <h3>chosen song:</h3>
-    <h5 id="chosenSong"></h5>
+  
+    <h3>#2. add 3 wrong answers: </h3>
+    <button class="btn" id="lazy_button">I am lazy, do it for me</button>
+    <br/>
 
-    <h3>make the question</h3>
-    <%= simple_form_for ([@user, @quiz, @question]), :controller => :questions, :action => :create, :method => :post, :html => {:class => 'form'}  do |q| %>
-    <div class="form-group">
+
+    <%= simple_form_for [@user, @quiz, @question], :controller => :questions, :action => :create, :method => :post do |q| %>
     <%=q.error_notification %>
-      <%= q.input :title,placeholder: 'What is the name of the song?', :input_html => {:id => "question_id_1"}, label: "Question content" %>
+      <%= q.input :title, :as => :hidden, :input_html => {:value => 'Which song is this?'}, label: "Question content" %>
       <%= q.input :song, :as => :hidden, label: "Question Song" %>
-      <%= q.input :explanation, placeholder: 'optional field',  label: "Question Explanation" %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, placeholder: 'Answer1', label: "Answer content" %>
-        <%=a.input :correct, :label => false, :as => :boolean, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, placeholder: 'Answer2', label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, placeholder: 'Answer3', label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, placeholder: 'Answer4', label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
 
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer1', label: "Answer #1", :input_html => {:class => "possible_choice", :id => "question_id_1"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer2', label: "Answer #2", :input_html => {:class => "possible_choice", :id => "question_id_2"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer3', label: "Answer #3", :input_html => {:class => "possible_choice", :id => "question_id_3"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer4', label: "Answer #4", :as => :hidden, :input_html => {:class => "possible_choice", :id => "the_correct_answer"} %>
+      <% end %>
+      <br/>
     <%= q.button :submit %>
     <div><!-- group -->
     <% end %>
   </div> 
   </div>
+  </div>
+
 </div><!-- container -->
-
-
-
 
 <% content_for :head do %>
   <script type="text/javascript">

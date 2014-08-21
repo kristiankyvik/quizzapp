@@ -15,7 +15,3 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
-body{
-  background-color: #95a5a6;
-}

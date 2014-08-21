@@ -34,8 +34,8 @@ gem 'devise'
 gem 'faker'
 gem 'factory_girl_rails'
 gem 'pry'
-gem 'simple_form'
 gem 'jquery-ui-rails'
+gem 'simple_form'
 
 gem "capybara", group: [:development, :test]
 gem "database_cleaner", group: [:development, :test]
