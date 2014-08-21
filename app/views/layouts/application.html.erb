@@ -3,9 +3,7 @@
 <head>
   <title>Quizzapp</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -25,7 +23,6 @@
         <li class="active pull-right"> <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></strong></li>
         <% end %>
 
-
       </ul>
       
       </div>
@@ -43,5 +40,7 @@
 
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p> 
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= yield :head %>
 </body>
 </html>

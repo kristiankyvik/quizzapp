@@ -1,6 +1,55 @@
 
-sdsdsdsds
-<%= simple_form_for [@user, @quiz] do |f| %>
-  <%= f.input :title %>
-  <%= f.button :submit %>
+<div class="divider" id="section1"></div>
+  
+<div class="container">
+  <div class="col-sm-10 col-sm-offset-1">
+    <div class="page-header text-center">
+      <h1>Create your own quizzes</h1>
+    </div>
+    
+    <p class="lead text-center">
+      <p class="text-center">
+        <%= simple_form_for [@user, @quiz]  do |f| %>
+          <%= f.input :title, placeholder: 'What is the name of the quiz?' %>
+          <%= f.button :submit %>
+        <% end %>
+    </p>
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+  
+<section class="bg-3" id="section4">
+  <div class="col-sm-6 col-sm-offset-3 text-center"><h2 style="padding:20px;"> Here are your quizzes: </h2></div>
+</section>
+
+<div class="continer bg-4">
+  <div class="row">
+
+    <% @quizzes.each do |quiz| %>
+
+     <div class="col-sm-4 col-xs-6">
+      
+        <div class="panel panel-default">
+          <div><img src="//placehold.it/360X250/565656/eee" class="img-responsive"></div>
+          <div class="panel-body">
+            <h2><%= quiz.title %></h2>
+            <div > <%= link_to "PLAY", user_quiz_path(current_user, quiz) %> </div>
+             <div > <%= link_to "EDIT", user_quiz_questions_path(current_user, quiz) %> </div>
+          </div>
+        </div><!--/panel-->
+
+      </div><!--/col-->
+
+    <% end %>
+      
+  </div><!--/row-->
+</div><!--/container-->
+
+
+<% content_for :head do %>
+  <script type="text/javascript">
+    <%= render :partial => "shared/special" %>
+  </script>
 <% end %>
