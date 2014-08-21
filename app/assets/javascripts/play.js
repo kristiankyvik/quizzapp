@@ -52,8 +52,6 @@ var currentquestion = 0,
           console.log(choice);
           console.log(currentquestion);
           console.log(quiz[currentquestion]['choices'][choice].title + "sasasa" + quiz[currentquestion]['choices']['correct']);
-
-
           if (quiz[currentquestion]['choices'][choice].correct) {
               $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
               score++;
@@ -121,7 +119,7 @@ var currentquestion = 0,
 
     function init() {
         $.ajax({
-              url: "http://localhost:3000/users/1/quizzes/1.json",
+              url: "http://localhost:3000/users/1/quizzes/" +$("#quiz-id").text() +".json",
               type: 'GET',
               crossDomain : true,
               xhrFields: {

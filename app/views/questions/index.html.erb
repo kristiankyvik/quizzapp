@@ -2,34 +2,6 @@
 
 <div class="row">
   <div class="col-md-3">
-    <h1>make the question</h1>
-    <%= simple_form_for ([@user, @quiz, @question]), :controller => :questions, :action => :create, :method => :post  do |q| %>
-    <%=q.error_notification %>
-      <%= q.input :title, :input_html => {:id => "question_id_1"}, label: "Question content" %>
-      <%= q.input :song, :as => :hidden, label: "Question Song" %>
-      <%= q.input :explanation, label: "Question Explanation" %>
-
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, label: "Answer content" %>
-        <%=a.input :correct, :label => false, :as => :boolean, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
-        <%=a.input :title, label: "Answer content" %>
-        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
-      <% end %>
-
-    <%= q.button :submit %>
-    <% end %>
-  </div>
-  <div class="col-md-4">
     <h1>chose song </h1>
     <form id= "search">
       <input type="text" name="searchItem"  id= "search"/>
@@ -41,6 +13,34 @@
   <div class="col-md-4">
     <h1>chosen song:</h1>
     <h3 id="chosenSong"></h3>
+  </div>
+  <div class="col-md-4">
+    <h1>make the question</h1>
+    <%= simple_form_for ([@user, @quiz, @question]), :controller => :questions, :action => :create, :method => :post  do |q| %>
+    <%=q.error_notification %>
+      <%= q.input :title,placeholder: 'What is the name of the song?', :input_html => {:id => "question_id_1"}, label: "Question content" %>
+      <%= q.input :song, :as => :hidden, label: "Question Song" %>
+      <%= q.input :explanation, placeholder: 'optional field',  label: "Question Explanation" %>
+
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer1', label: "Answer content" %>
+        <%=a.input :correct, :label => false, :as => :boolean, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer2', label: "Answer content" %>
+        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer3', label: "Answer content" %>
+        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer4', label: "Answer content" %>
+        <%=a.input :correct, :as => :boolean, :label => false, :inline_label => true, input_html: {checked: false} %>
+      <% end %>
+
+    <%= q.button :submit %>
+    <% end %>
   </div>
   </div>
 

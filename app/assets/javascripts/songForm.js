@@ -73,7 +73,7 @@ var putResults=function(object){
     var a=document.createElement("a");
     artist.className="artist";
     song.className="song";
-    artist.textContent=object[key].artists[0].name;
+    artist.textContent=object[key].artists[0].name + " - ";
     song.textContent=object[key].name;
     a.id=object[key].id;
     a.appendChild(artist);
