@@ -18,24 +18,23 @@ class GamesController < ApplicationController
   end
 
   def client
+   
+  end
+
+  def signup
     username = params[:username]
     session[:players] ||= []
     session[:players] << params[:username]
     # session["#{username}"] = params[:username]
-    Pusher['server_channel'].trigger('signup', {
+    Pusher['server_channel'].trigger('new_signup', {
       message: username
     })
 
-
     respond_to do |format|
-          format.html 
           format.json {
             render json: { :message => "message"}
         }
     end
-  end
-
-  def sign_up
   end
 
 end

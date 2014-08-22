@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :play
       get :server
       get :client
+      post :signup
       post :client
       post :start
     end

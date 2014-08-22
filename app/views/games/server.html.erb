@@ -31,8 +31,8 @@ this is the server that will host the event
 
     var pusher = new Pusher('0b3fd7d5eb569adb55a2');
     var channel = pusher.subscribe('server_channel');
-    channel.bind('signup', function(data) {
-      $('#players').append('<p>'+ data.message +'</p>');
+    channel.bind('new_signup', function(data) {
+      $('#players').append('<p>'+ data.message + ' joined the game! </p>');
     });
 
 

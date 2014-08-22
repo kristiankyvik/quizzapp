@@ -11,11 +11,36 @@ this is where the game will be played by clients
 
 
 <style type="text/css">
-  .dummy{
-    background-color: #e74c3c;
-    height: 80px;
-  }
+    #frame {
+        height:500px;
+        width: 100%;
+    }
 
+    .box {
+        width: 50%;
+        height: 50%;
+        float: left;
+    }
+
+    .box:nth-of-type(1) {
+        background: #2980b9;
+    }
+
+    .box:nth-of-type(2) {
+        background: #e74c3c;
+        border-left: 1px solid #f00;
+    }
+
+    .box:nth-of-type(3) {
+        background: #27ae60;
+        border-top: 1px solid #f00;
+    }
+
+    .box:nth-of-type(4) {
+        background: #e67e22;
+        border-top: 1px solid #f00;
+        border-left: 1px solid #f00;
+    }
 </style>
 
 <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
@@ -33,9 +58,44 @@ this is where the game will be played by clients
   var channel = pusher.subscribe('test_channel');
   
   channel.bind('start_game', function(data) {
-    $("#frame").empty();
-    $("#frame").append('<div class="row"><div class="col-md-3 col-sm-4 col-xs-6"><div id="choice-1" class="dummy" id="choice-2" >option #1</div></div><div class="col-md-3 col-sm-4 col-xs-6"><div class="dummy" id="choice-3" >option #2</div></div><div class="col-md-3 col-sm-4 col-xs-6"><div class="dummy" id="choice-4" >option #3</div></div><div class="col-md-3 col-sm-4 col-xs-6"><div class="dummy">option #4</div></div></div></div>');
+    $("#frame").empty().addClass("activated");
+
+    $("#frame").append('<div class="box" id="c1"></div><div class="box" id="c2"></div><div class="box"  id="c3"></div><div class="box" id="c4"></div>');
+
+    $('#c1').on('click', function(e) {
+      console.log("choice 1");
+      
+
+    });
+
+    $('#c2').on('click', function(e) {
+      console.log("choice 2");
+      
+      
+    });
+
+    $('#c3').on('click', function(e) {
+      console.log("choice 3");
+      
+      
+    });
+
+    $('#c4').on('click', function(e) {
+      console.log("choice 4");
+      
+      
+    });
+
+
+
   });
+
+
+  
+
+
+
+
 
 
 
@@ -49,14 +109,12 @@ var setUpLobby = function() {
     console.log(input);
     var data = {username: input};
     $.ajax({
-          url: "/games/client",
+          url: "/games/signup",
           type: "post",
           data: data,
           dataType: "json"
         });
     setUpLobby();
-
-
     });
 
 
