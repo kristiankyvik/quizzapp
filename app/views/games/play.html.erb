@@ -1,0 +1,19 @@
+this is where the game will be displayed
+
+
+<script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+  Pusher.log = function(message) {
+      if (window.console && window.console.log) {
+        window.console.log(message);
+      }
+    };
+
+    var pusher = new Pusher('0b3fd7d5eb569adb55a2');
+    var channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function(data) {
+      alert(data.message);
+    });
+  </script>
