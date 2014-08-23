@@ -4,43 +4,76 @@
   <title>Quizzapp</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag "http://js.pusherapp.com/1.9/pusher.min.js"%>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand"  href=<%= root_path %>>Quizzapp</a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <% if user_signed_in? %>
-        <ul class="nav navbar-nav navbar-right">
-          <p class="navbar-text">Logged in as <strong><%= current_user.email %></strong></p> 
-          <li class="active"> <%= link_to "Logout", destroy_user_session_path, method: :get, :class => 'navbar-link'  %></strong></li>
-          <li><a href=<%= user_quizzes_path(current_user) %>>Profile</a></li>
-        </ul>
-        <% else %>
-        <li class="active pull-right"> <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %></li>
-        <li class="active pull-right"> <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></strong></li>
-        <% end %>
-      </ul>
-
-      </div>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
   
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">QUIZZAPP</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-right">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="index.html">HOME</a></li>
+          <li><a href="about.html">ABOUT</a></li>
+          <% if user_signed_in? %>
+            <li> <%= link_to "LOGOUT", destroy_user_session_path, method: :get, :class => 'navbar-link'  %></strong></li>
+            <li><a href="#">Logged in as <strong><%= current_user.email %></strong></a></li>
+            <% else %>
+            <li class="pull-right"> <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %></li>
+            <li class="pull-right"> <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></strong></li>
+            <% end %>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+
+<div style="height: 60px"></div>
 
 
-<div class="container">
 
 <%= yield %>
 
+<!-- <div id="footerwrap">
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <h4>About</h4>
+      <div class="hline-w"></div>
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+    </div>
+    <div class="col-lg-4">
+      <h4>Social Links</h4>
+      <div class="hline-w"></div>
+      <p>
+        <a href="#"><i class="fa fa-dribbble"></i></a>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-tumblr"></i></a>
+      </p>
+    </div>
+    <div class="col-lg-4">
+      <h4>Our Bunker</h4>
+      <div class="hline-w"></div>
+      <p>
+        Some Ave, 987,<br/>
+        23890, New York,<br/>
+        United States.<br/>
+      </p>
+    </div>
+  
+  </div>
 </div>
+</div>
+ -->
 
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p> 

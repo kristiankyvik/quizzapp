@@ -7,6 +7,8 @@ var currentquestion = 0,
     timer;
 
     $(document).ready(function(){
+      var audio=document.getElementById('audio');
+      var progress=document.querySelector("progress");
 
     function htmlEncode(value) {
         return $(document.createElement('div')).text(value).html();
@@ -22,12 +24,13 @@ var currentquestion = 0,
               success: function(data) {
                 audio.setAttribute('src', data.preview_url);
                 audio.play();
+
               }
           })
     };
 
     function setupLayout () {
-      $('<h1/>').text(quiztitle).appendTo('#frame');
+      $('<h1/>').text(quiztitle).appendTo('#guapa');
       $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
       $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
       $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
@@ -117,6 +120,17 @@ var currentquestion = 0,
         $('h2').text(Math.round(score / quiz.length * 100) + '%').insertAfter('#question');
     }
 
+    var setProgress=function(audio, progress){
+      var ratio=125/audio.duration;
+      var progressValue=Math.floor(ratio*audio.currentTime);
+      progress.value=progressValue;
+    }
+
+    audio.addEventListener('timeupdate',function(evt){
+      setProgress(audio,progress);      
+    })
+
+
     function init() {
         $.ajax({
               url: location.pathname + $("#quiz-id").text() +".json",
@@ -132,6 +146,7 @@ var currentquestion = 0,
             quiz = data[Object.keys(data)];
             console.log(quiz)
             setupLayout();
+
             loadAudio(quiz[0].song);
             timer = window.setTimeout(showTimeoutBox, 8000);
           });
