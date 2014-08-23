@@ -13,6 +13,34 @@ class QuestionsController < ApplicationController
     redirect_to :controller => :questions, :action => :index
   end
 
+  def edit
+    @user = User.find(params[:user_id])
+    @quiz = Quiz.find(params[:quiz_id])
+    @question = Question.find(params[:id])
+    render 'edit'
+  end
+
+  def update
+    quiz = Quiz.find(params[:quiz_id])
+    quiz.questions.destroy(params[:id])
+    if quiz.questions.create(permitted_params)
+      redirect_to :controller => :questions, :action => :index
+    else
+      @user = User.find(params[:user_id])
+      @quiz = Quiz.find(params[:quiz_id])
+      @question = Question.find(params[:id])
+      render 'edit'
+    end 
+  end
+
+  def destroy
+    Question.destroy(params[:id])
+    redirect_to( action: 'index', controller: 'questions')
+  end
+
+
+
+
   private
   def permitted_params
     params.require(:question).permit(:title, :song, :explanation, :choice, choices_attributes: [:title, :correct])

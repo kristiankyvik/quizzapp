@@ -1,20 +1,52 @@
 
+
+<style type="text/css">
+  
+  .form-large{
+      font-size: 35px;
+  }
+
+  .form-large .control-label{
+      padding-top: 20px;
+      padding-bottom: 20px;
+      line-height: normal;
+  }
+
+  .form-large input, .form-large  button{
+      font-size: 35px;
+      padding: 15px;
+      height: auto;
+      line-height: normal;
+      margin-bottom: -30px;
+  }
+
+  .my-hidden{
+     display: none;
+
+  }
+</style>
+
+
 <div class="divider" id="section1"></div>
   
 <div class="container">
-  <div class="col-sm-10 col-sm-offset-1">
-    <div class="page-header text-center">
-      <h1>Create your own quizzes</h1>
+  <div class="col-sm-10 col-sm-offset-1">        
+       <div class="form-large">
+            <%= form_for([@user, @quiz]) do |f| %>
+
+              <div class="form-group">
+                <%= f.text_field :title, class: "form-control", :placeholder => "choose your title", :autofocus => true %>
+                </div>
+              <div class="row">
+    <div class="col-md-2 col-md-offset-5">
+              <div class="form-group">
+                <%= f.submit "Start", class: "btn my-hidden btn-primary pull-right" %>
+              </div>
     </div>
-    
-    <p class="lead text-center">
-      <p class="text-center">
-        <%= simple_form_for [@user, @quiz]  do |f| %>
-          <%= f.input :title, placeholder: 'What is the name of the quiz?' %>
-          <%= f.button :submit %>
-        <% end %>
-    </p>
-    </p>
+</div>
+            <% end %>
+        </div>
+
   </div>
 </div>
 

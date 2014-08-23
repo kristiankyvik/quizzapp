@@ -1,0 +1,49 @@
+<div class="col-md-4">
+    <h2>Edit the question</h2>
+    <h3>#1. choose a song: <span id="chosenSong"></span> </h3>    
+    <form id= "search">
+      <input type="text" name="searchItem"  id= "search"/>
+      <button type="submit">load track</button>
+    </form>
+    <ul id="results">
+    </ul>
+  
+    <h3>#2. add 3 wrong answers: </h3>
+    <button class="btn" id="lazy_button">I am lazy, do it for me</button>
+    <br/>
+
+    <%= simple_form_for [@user, @quiz, @question], :controller => :questions, :action => :update, :method => :put do |q| %>
+    <%=q.error_notification %>
+      <%= q.input :title, :as => :hidden, :input_html => {:value => 'Which song is this?'}, label: "Question content" %>
+      <%= q.input :song, :as => :hidden, label: "Question Song" %>
+
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer1', label: "Answer #1", :input_html => {:class => "possible_choice", :id => "question_id_1"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer2', label: "Answer #2", :input_html => {:class => "possible_choice", :id => "question_id_2"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer3', label: "Answer #3", :input_html => {:class => "possible_choice", :id => "question_id_3"} %>
+      <% end %>
+      <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
+        <%=a.input :title, placeholder: 'Answer4', label: "Answer #4", :as => :hidden, :input_html => {:class => "possible_choice", :id => "the_correct_answer"} %>
+      <% end %>
+      <br/>
+    <%= q.button :submit %>
+    <div><!-- group -->
+    <% end %>
+  </div> 
+  </div>
+  </div>
+
+</div><!-- container -->
+
+<% content_for :head do %>
+  <script type="text/javascript">
+    <%= render :partial => "shared/init_accordion" %>
+    <%= render :partial => "shared/form_logic" %>
+    <%= render :partial => "shared/order_questions" %>
+
+  </script>
+<% end %>

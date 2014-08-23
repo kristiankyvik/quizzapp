@@ -30,6 +30,8 @@
       }
   </style>
 
+  
+
   <div class="container">
     <div class="col-md-5">
     <% @questions.each do |question| %>
@@ -40,6 +42,7 @@
                     <h4 style="display: inline" >Question</h4><h5 style="display: inline" > : <%= question.title %>
                       <h3 class="panel-title"> </h3>
                       <span class="pull-right clickable">show</span>
+
                   </div>
                   <div class="panel-body">
                     <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
@@ -55,10 +58,10 @@
                                   <% count_choice = count_choice + 1 %>
                                 <% end %>
                               </ul>
+                            <%= link_to "edit", edit_user_quiz_question_path(current_user, @quiz, question), method: :get, :class => 'pull-right' %>
+                            <%= link_to "delete", user_quiz_question_path(current_user, @quiz, question), method: :delete, :class => 'pull-right' %>
                       </div>
                   </div><!-- End Listing-->
-
-                    
                   </div>
           </div>
       </div>
