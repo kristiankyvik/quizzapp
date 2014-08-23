@@ -94,6 +94,7 @@
 
     <%= simple_form_for [@user, @quiz, @question], :controller => :questions, :action => :create, :method => :post do |q| %>
     <%=q.error_notification %>
+
       <%= q.input :title, :as => :hidden, :input_html => {:value => 'Which song is this?'}, label: "Question content" %>
        <%= q.input :image_url, :as => :hidden, label: "image url", :input_html => {:class => "image-question"} %>
       <%= q.input :song, :as => :hidden, label: "Question Song" %>
@@ -109,6 +110,7 @@
       <% end %>
       <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>
         <%=a.input :title, placeholder: 'Answer4', label: "Answer #4", :as => :hidden, :input_html => {:class => "possible_choice", :id => "the_correct_answer"} %>
+        <%=a.input :correct, :as => :boolean, :as => :hidden, input_html: {value: true} %>
       <% end %>
       <br/>
     <%= q.button :submit %>

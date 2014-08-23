@@ -26,15 +26,11 @@ var loadSearch=function(link){
             var selected=evt.target;
             //If the user click on the song name or author name we have to get the url from <a></a>
             if(evt.target.nodeName!=="A")
-              console.log("link clicked")
               selected=evt.target.parentNode;
               var name = $(selected).find('.song')[0].innerHTML;
-              console.log($(selected));
               artist = $(selected).find('.artist')[0].innerHTML;
               var field = $("#question_song")[0];
               var image_field = $("#question_image_url")[0]
-              console.log(image_field);
-              console.log($(selected)[0].image_url)
               image_field.value = $(selected)[0].image_url
               field.value = selected.id;
               document.getElementById("chosenSong").innerHTML = name;

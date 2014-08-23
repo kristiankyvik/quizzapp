@@ -16,14 +16,15 @@ var currentquestion = 0,
 
     var loadAudio = function (link){
       $.ajax({
-              url: "https://api.spotify.com/v1/tracks/"+link,
-              type: 'GET',
-              crossDomain : true,
-              xhrFields: {
+          url: "https://api.spotify.com/v1/tracks/"+link,
+          type: 'GET',
+          crossDomain : true,
+          xhrFields: {
           },
-              success: function(data) {
-                audio.setAttribute('src', data.preview_url);
-                audio.play();
+          success: function(data) {
+            audio.setAttribute('src', data.preview_url);
+            audio.volume=0.3;
+            audio.play();
 
               }
           })
@@ -56,10 +57,12 @@ var currentquestion = 0,
           console.log(currentquestion);
           console.log(quiz[currentquestion]['choices'][choice].title + "sasasa" + quiz[currentquestion]['choices']['correct']);
           if (quiz[currentquestion]['choices'][choice].correct) {
-              $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
-              score++;
+            $('#win_sound')[0].play();
+            $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
+            score++;
           } else {
-          $('#explanation').html('<strong>Incorrect.</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
+            $('#loose_sound')[0].play();
+            $('#explanation').html('<strong>Incorrect.</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
           }
           $("#nextButton").show();
           if (cansubmit) {
@@ -146,7 +149,6 @@ var currentquestion = 0,
             quiz = data[Object.keys(data)];
             console.log(quiz)
             setupLayout();
-
             loadAudio(quiz[0].song);
             timer = window.setTimeout(showTimeoutBox, 8000);
           });
