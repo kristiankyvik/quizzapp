@@ -8,7 +8,7 @@
   }
 
   progress {
-    width: 100%;
+    width: 60%;
     height: 15px;
     padding: 0;
     background-color: #3e3e40;
@@ -40,7 +40,6 @@
         <audio id="loose_sound" src= "http://apm.eduardereza.com/audio/zasca.mp3"%> ></audio>
         <div id="quiz-id" style="display: none;"> <%= @quiz.id %> </div>
         <div id = "frame" role = "content" >
-
           <div class="seekbar">
             <progress value="0" max="30"></progress>
           </div>
@@ -51,7 +50,24 @@
 </div>
   
 
-<div class="modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="myModal">
+<div class="modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="correct_modal">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Correct</h4>
+        </div>
+        <div class="modal-body">
+          You are the man
+        </div>
+        <div class="modal-footer">
+          <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal-succes">Next Question</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="timeup_modal">
   <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -61,7 +77,7 @@
           Oopss Time out!!
         </div>
         <div class="modal-footer">
-          <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal">Next Question</a>
+          <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal-fail">Next Question</a>
         </div>
       </div>
     </div>
