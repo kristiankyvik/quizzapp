@@ -43,6 +43,6 @@ class QuestionsController < ApplicationController
 
   private
   def permitted_params
-    params.require(:question).permit(:title, :song, :explanation, :choice, choices_attributes: [:title, :correct])
+    params.require(:question).permit(:title, :image_url, :song, :explanation, :choice, choices_attributes: [:title, :correct])
   end
 end

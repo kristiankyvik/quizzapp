@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140820090944) do
   create_table "questions", force: true do |t|
     t.string   "title"
     t.string   "song"
+    t.string   "image_url"
     t.text     "explanation"
     t.integer  "quiz_id"
     t.datetime "created_at"

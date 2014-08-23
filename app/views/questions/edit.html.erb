@@ -15,6 +15,7 @@
     <%= simple_form_for [@user, @quiz, @question], :controller => :questions, :action => :update, :method => :put do |q| %>
     <%=q.error_notification %>
       <%= q.input :title, :as => :hidden, :input_html => {:value => 'Which song is this?'}, label: "Question content" %>
+      <%= q.input :image_url, :as => :hidden, label: "image url", :input_html => {:class => "image-question"}  %>
       <%= q.input :song, :as => :hidden, label: "Question Song" %>
 
       <%= q.simple_fields_for :choices, q.object.choices.build do |a| %>

@@ -65,7 +65,7 @@
      <div class="col-sm-4 col-xs-6">
       
         <div class="panel panel-default">
-          <div><img src="//placehold.it/360X250/565656/eee" class="img-responsive"></div>
+          <div><img alt="image" class="img-responsive" src=<%= quiz.questions.first.image_url %>></a></div>
           <div class="panel-body">
             <h2><%= quiz.title %></h2>
             <div > <%= link_to "PLAY", user_quiz_path(current_user, quiz) %> </div>

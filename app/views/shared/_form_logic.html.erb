@@ -29,8 +29,13 @@ var loadSearch=function(link){
               console.log("link clicked")
               selected=evt.target.parentNode;
               var name = $(selected).find('.song')[0].innerHTML;
+              console.log($(selected));
               artist = $(selected).find('.artist')[0].innerHTML;
               var field = $("#question_song")[0];
+              var image_field = $("#question_image_url")[0]
+              console.log(image_field);
+              console.log($(selected)[0].image_url)
+              image_field.value = $(selected)[0].image_url
               field.value = selected.id;
               document.getElementById("chosenSong").innerHTML = name;
               $('#the_correct_answer')[0].value = name;
@@ -84,10 +89,12 @@ var putResults=function(object){
     var a=document.createElement("a");
     artist.className="artist";
     song.className="song";
+    var image_url = object[key].album.images[0].url;
     artist.textContent= " by " + object[key].artists[0].name;
     song.textContent= object[key].name;
     a.id=object[key].id;
     a.appendChild(song);
+    a.image_url = image_url;
     a.appendChild(artist);
     li.appendChild(a);
     ul.appendChild(li);
