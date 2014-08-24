@@ -26,10 +26,10 @@ var currentquestion = 0,
           success: function(data) {
             audio.setAttribute('src', data.preview_url);
             audio.addEventListener('canplaythrough', function() {
+              $('#circles')[0].className="loader hidden";
               audio.play();
               audio.volume=0.3;
               if (currentquestion < quiz.length && first_time == true) {
-                console.log("timer set" + link);
                 clearAlert();
                 timer = window.setTimeout(showTimeoutBox, 8000); //e aqui el problema<1!!!!
               }
@@ -40,13 +40,13 @@ var currentquestion = 0,
 
     function setupLayout () {
       $('<h1/>').text(quiztitle).appendTo('#guapa');
-      $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
-      $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
-      $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
-      $('<p/>').addClass('explanation').attr('id', 'explanation').html('&nbsp;').appendTo('#frame');
-      $('<ul/>').attr('id', 'choice-block').appendTo('#frame');
+      $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#top-frame');
+      $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#top-frame'); 
+      $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#bottom-frame');
+      // $('<p/>').addClass('explanation').attr('id', 'explanation').html('&nbsp;').appendTo('#bottom-frame');
+      $('<ul/>').attr('id', 'choice-block').appendTo('#bottom-frame');
       addChoices(quiz[0]['choices']);
-      $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
+      $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#bottom-frame').hide();
       setupButtons();   
     }
 
@@ -60,7 +60,6 @@ var currentquestion = 0,
     function setupButtons() {
       $('.choice').on('click', function () {
           clearAlert();
-          first_time = false;
           choice = $(this).attr('data-index');
           if (quiz[currentquestion]['choices'][choice].correct) {
             showCorrectBox()
@@ -72,6 +71,7 @@ var currentquestion = 0,
     }
 
     function showTimeoutBox() {
+      first_time = false;
       $('#loose_sound')[0].play();
       $('#timeup_modal').modal({show:true})
       cansubmit = false;
@@ -84,6 +84,7 @@ var currentquestion = 0,
     }
 
     function showCorrectBox() {
+      first_time = false;
       $('#win_sound')[0].play();
       $('#correct_modal').modal({show:true})
       $("#next-question-modal-succes").click(function(){
@@ -135,7 +136,7 @@ var currentquestion = 0,
     }
 
     var setProgress=function(audio, progress){
-      var ratio=125/audio.duration;
+      var ratio=118/audio.duration;
       var progressValue=Math.floor(ratio*audio.currentTime);
       progress.value=progressValue;
     }

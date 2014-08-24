@@ -7,6 +7,24 @@
      background-color: #e74c3c; 
   }
 
+  p{
+    color: white;
+  }
+  .questionCounterBanner, .question {
+    color: white;
+  }
+
+  .question {
+    font-size: 25px;
+  }
+
+
+  .hidden{
+    visibility: hidden;
+  };
+
+
+
   progress {
     width: 60%;
     height: 15px;
@@ -17,7 +35,8 @@
     overflow: hidden;
   }
 
-  progress::-webkit-progress-bar {
+  progress::-webkit-progress-bar
+   {
     background-color: #3e3e40;
   }
 
@@ -28,8 +47,138 @@
   progress::-moz-progress-bar {
     background-color: #45a800;
   }
+body {
+  background: #222;
+  color: white;
+  background:#333;
+  background: -webkit-gradient(radial, center center, 120, center center, 900, from(#33495E), to(#2E2329));
+  background:-moz-radial-gradient(circle, #33495E, #2E2329);
+
+}
+
+ .modal, .custom-modal .modal-dialog{
+    width: 50%;
+    left:17%;
+    color: black;
+    top:15%;
+  }
+
+.loader{
+  margin:200px auto;
+}
+h1{
+  font-family: 'Actor', sans-serif;
+  color:#FFF;
+  font-size:16px;
+  letter-spacing:1px;
+  font-weight:200;
+  text-align:center;
+}
+.loader span{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  display:inline-block;
+  position:absolute;
+  left:50%;
+  margin-left:-10px;
+  -webkit-animation:3s infinite linear;
+  -moz-animation:3s infinite linear;
+  -o-animation:3s infinite linear;
+  
+}
+
+.loader span:nth-child(2){
+  background:#E84C3D;
+  -webkit-animation:kiri 1.2s infinite linear;
+  -moz-animation:kiri 1.2s infinite linear;
+  -o-animation:kiri 1.2s infinite linear;
+  
+}
+.loader span:nth-child(3){
+  background:#F1C40F;
+  z-index:100;
+}
+.loader span:nth-child(4){
+  background:#2FCC71;
+  -webkit-animation:kanan 1.2s infinite linear;
+  -moz-animation:kanan 1.2s infinite linear;
+  -o-animation:kanan 1.2s infinite linear;
+}
+
+
+@-webkit-keyframes kanan {
+    0% {-webkit-transform:translateX(20px);
+    }
+  50%{-webkit-transform:translateX(-20px);
+  }
+  
+  100%{-webkit-transform:translateX(20px);
+  z-index:200;
+  }
+}
+@-moz-keyframes kanan {
+    0% {-moz-transform:translateX(20px);
+    }
+   
+  50%{-moz-transform:translateX(-20px);
+  }
+  
+  100%{-moz-transform:translateX(20px);
+  z-index:200;
+  }
+}
+@-o-keyframes kanan {
+    0% {-o-transform:translateX(20px);
+    }
+  50%{-o-transform:translateX(-20px);
+  }
+  100%{-o-transform:translateX(20px);
+  z-index:200;
+  }
+}
+
+@-webkit-keyframes kiri {
+     0% {-webkit-transform:translateX(-20px);
+  z-index:200;
+    }
+  50%{-webkit-transform:translateX(20px);
+  }
+  100%{-webkit-transform:translateX(-20px);
+  }
+}
+
+@-moz-keyframes kiri {
+     0% {-moz-transform:translateX(-20px);
+  z-index:200;
+    }
+  50%{-moz-transform:translateX(20px);
+  }
+  100%{-moz-transform:translateX(-20px);
+  }
+}
+@-o-keyframes kiri {
+     0% {-o-transform:translateX(-20px);
+  z-index:200;
+    }
+  50%{-o-transform:translateX(20px);
+  }
+  100%{-o-transform:translateX(-20px);
+  }
+}
+
+.hidden { display: none; }
+
+
 
 </style>
+
+<div class="loader" id="circles">
+    <h1>LOADING</h1>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 
 
 <div class="container mt">
@@ -40,42 +189,42 @@
         <audio id="loose_sound" src= "http://apm.eduardereza.com/audio/zasca.mp3"%> ></audio>
         <div id="quiz-id" style="display: none;"> <%= @quiz.id %> </div>
         <div id = "frame" role = "content" >
+        <div id="top-frame" ></div>
           <div class="seekbar">
             <progress value="0" max="30"></progress>
           </div>
-
+        <div id="bottom-frame"></div>
         </div>
     </div>
   </div>
 </div>
   
 
-<div class="modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="correct_modal">
+<div class="modal custom-modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="correct_modal">
   <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Correct</h4>
+          <h4 class="modal-title text-center">Correct</h4>
         </div>
-        <div class="modal-body">
-          You are the man
-        </div>
-        <div class="modal-footer">
+        <div class="modal-body mymodal">
+        <img src="http://media.giphy.com/media/kmYBXYUp3K8lG/giphy.gif">
+        Oopss Time out!!
+        </div>          
+       <div class="modal-footer">
           <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal-succes">Next Question</a>
         </div>
       </div>
     </div>
 </div>
 
-
-<div class="modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="timeup_modal">
+<div class="modal custom-modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="timeup_modal">
   <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Boooo!!!!!</h4>
-        </div>
-        <div class="modal-body">
-          Oopss Time out!!
-        </div>
+          <h4 class="modal-title text-center">Boooo!!!!!</h4>
+        </div>   
+          <img src="http://media.giphy.com/media/lmmPhmwEELuPC/giphy.gif
+">         
         <div class="modal-footer">
           <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal-fail">Next Question</a>
         </div>
