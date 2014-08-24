@@ -1,14 +1,50 @@
-<button type="button" id="fuck" class="btn btn-default btn-lg">
+<style type="text/css">
+  
+  .form-large{
+      font-size: 35px;
+  }
 
-</button>
-<div id="joder"></div>
+  .form-large .control-label{
+      padding-top: 20px;
+      padding-bottom: 20px;
+      line-height: normal;
+  }
 
-<script type="text/javascript">
-  document.getElementById('fuck').addEventListener('click', function(evt){
+  .form-large input, .form-large  button{
+      font-size: 35px;
+      padding: 15px;
+      height: auto;
+      line-height: normal;
+      margin-bottom: -30px;
+  }
 
-    document.getElementById('joder').innerHTML = "uyuy"
-    
-  });
+  .my-hidden{
+     display: none;
+  }
+</style>
 
-</script>
-
+<div id="headerwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <h3>The new app is for making quizzes</h3>
+        <h1>music quizzes, that is</h1>      
+      </div>
+      <div class="divider" id="section1"></div>
+      <div class="col-sm-10 col-sm-offset-1">        
+        <div class="form-large">
+          <div class="form-group">
+            <div class="input-append">
+                <input name="search" id="search" placeholder="Enter quiz title to start..."/>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- <div class="col-lg-8 col-lg-offset-2 himg">
+        <img src="assets/img/browser.png" class="img-responsive">
+      </div> -->
+    </div><!-- /row -->
+  </div> <!-- /container -->
+</div><!-- /headerwrap -->
+  
