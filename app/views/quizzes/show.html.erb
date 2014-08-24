@@ -50,7 +50,7 @@
   }
 body {
   font-family: Montserrat;
-   background-color: #777;
+  background-color: #777;
   background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
 /*  background: #222;
   color: white;
@@ -60,14 +60,29 @@ body {
 
 }
 
-
-
  .modal, .custom-modal .modal-dialog{
     width:50%;
     left:17%;
     color: black;
     top:15%;
+
   }
+
+  .modal-header, .modal-footer{
+    background-color:#e74c3c;
+  }
+  .modal-footer{
+    background-color:#e74c3c;
+    color:black;
+  }
+  .modal-footer .close{
+    color:black;
+  }
+
+  .modal-body{
+    background-color: none;
+  }
+
 
 .loader{
   margin:200px auto;
@@ -200,6 +215,9 @@ h1{
     background-color: #33B5E5;
 }
 
+#next-question-modal-fail, #next-question-modal-succes {
+  color:black;
+}
 
 
 </style>

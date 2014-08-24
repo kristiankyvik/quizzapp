@@ -57,7 +57,13 @@ var currentquestion = 0,
       for (var i = 0; i < choices.length; i++) {
           $('<li/>').addClass('choice choice-box').attr('data-index', i).text(choices[i].title).appendTo('#choice-block');
       }
+      var ulist = $('#choice-block')[0];
+      for (var i = ulist.children.length; i >= 0; i--) {
+          ulist.appendChild(ulist.children[Math.random() * i | 0]);
+      }
     }
+
+
 
     function setupButtons() {
       $('.choice').on('click', function () {

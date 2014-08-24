@@ -29,17 +29,27 @@
 
       }
 
-      body {
+      #instruccions{
         color:white;
+      }
+
+      input{
+        color:black;
+      }
+
+      button{
+        color:black;
+      }
+
+
+      li{
+        cursor: pointer;
+      }
+      body {
+
         font-family: Montserrat;
          background-color: #777;
         background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
-      /*  background: #222;
-        color: white;
-        background:#333;
-        background: -webkit-gradient(radial, center center, 120, center center, 900, from(#33495E), to(#2E2329));
-        background:-moz-radial-gradient(circle, #33495E, #2E2329);*/
-
       }
   </style>
 
@@ -61,7 +71,6 @@
                     <h4 style="display: inline" >Question</h4><h5 style="display: inline" > : <%= question.title %>
                       <h3 class="panel-title"> </h3>
                       <span class="pull-right clickable">show</span>
-
                   </div>
                   <div class="panel-body">
                     <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
@@ -90,9 +99,9 @@
 
 <div class="col-md-1"></div>
 
-<div class="col-md-4">
-    <h2>To add a new question:</h2>
-    <h3>#1. choose a song: <span id="chosenSong"></span> </h3>    
+<div class="col-md-5" id="instruccions">
+    <h2>To add a new song to the quiz:</h2>
+    <h3>#1. Search for an artist or song: <span id="chosenSong"></span> </h3>    
     <form id= "search">
       <input type="text" name="searchItem"  id= "search"/>
       <button type="submit">load track</button>
