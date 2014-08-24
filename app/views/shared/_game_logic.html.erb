@@ -26,12 +26,14 @@ var currentquestion = 0,
           success: function(data) {
             audio.setAttribute('src', data.preview_url);
             audio.addEventListener('canplaythrough', function() {
-              $('#circles')[0].className="loader hidden";
+
+              $('#box-loader')[0].className="loader hidden";
+              $('#todo')[0].className = "";
               audio.play();
               audio.volume=0.3;
               if (currentquestion < quiz.length && first_time == true) {
                 clearAlert();
-                timer = window.setTimeout(showTimeoutBox, 8000); //e aqui el problema<1!!!!
+                timer = window.setTimeout(showTimeoutBox, 8000); 
               }
             }, false);
               }
@@ -113,6 +115,8 @@ var currentquestion = 0,
     }
 
     function nextQuestion() {
+        $('#todo')[0].className = "hidden";
+        $('#box-loader')[0].className="loader";
         console.log("nect question called");
         cansubmit = true;
         first_time = true;

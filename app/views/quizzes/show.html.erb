@@ -1,5 +1,7 @@
 
 <style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400);
+
   ul{
     list-style-type: none;
   }
@@ -24,9 +26,8 @@
   };
 
 
-
   progress {
-    width: 60%;
+    width: 15%;
     height: 15px;
     padding: 0;
     background-color: #3e3e40;
@@ -48,16 +49,21 @@
     background-color: #45a800;
   }
 body {
-  background: #222;
+  font-family: Montserrat;
+   background-color: #777;
+  background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
+/*  background: #222;
   color: white;
   background:#333;
   background: -webkit-gradient(radial, center center, 120, center center, 900, from(#33495E), to(#2E2329));
-  background:-moz-radial-gradient(circle, #33495E, #2E2329);
+  background:-moz-radial-gradient(circle, #33495E, #2E2329);*/
 
 }
 
+
+
  .modal, .custom-modal .modal-dialog{
-    width: 50%;
+    width:50%;
     left:17%;
     color: black;
     top:15%;
@@ -105,6 +111,10 @@ h1{
   -moz-animation:kanan 1.2s infinite linear;
   -o-animation:kanan 1.2s infinite linear;
 }
+
+  #todo{
+    top:200px;
+  }
 
 
 @-webkit-keyframes kanan {
@@ -170,35 +180,61 @@ h1{
 .hidden { display: none; }
 
 
+#choice-block li {
+  letter-spacing: 2px;
+  line-height: 4.5em;
+  font-family:Montserrat;
+  color: white;
+  list-style: none;
+  text-align: center;
+  background-color: #fc2161;
+  width: 300px;
+  line-height: 60px;
+  margin: auto;
+}
+
+#choice-block li:hover {
+    cursor:pointer;
+    text-decoration: none;
+    color: #000000;
+    background-color: #33B5E5;
+}
+
+
 
 </style>
 
-<div class="loader" id="circles">
-    <h1>LOADING</h1>
-    <span></span>
-    <span></span>
-    <span></span>
+<div id="box-loader">
+  <div class="loader" id="circles">
+      <h1>LOADING</h1>
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
 </div>
 
 
-<div class="container mt">
-    <div class="row">
-      <div class="col-lg-10 col-lg-offset-1 centered">
-        <audio autoplay loop id="audio" ></audio>
-        <audio id="win_sound" src= "http://apm.eduardereza.com/audio/voy_fuerte.mp3"%> ></audio>
-        <audio id="loose_sound" src= "http://apm.eduardereza.com/audio/zasca.mp3"%> ></audio>
-        <div id="quiz-id" style="display: none;"> <%= @quiz.id %> </div>
-        <div id = "frame" role = "content" >
-        <div id="top-frame" ></div>
-          <div class="seekbar">
-            <progress value="0" max="30"></progress>
+
+<div id="todo" class="hidden">
+  <div class="container mt">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 centered">
+          <audio autoplay loop id="audio" ></audio>
+          <audio id="win_sound" src= "http://apm.eduardereza.com/audio/voy_fuerte.mp3"%> ></audio>
+          <audio id="loose_sound" src= "http://apm.eduardereza.com/audio/zasca.mp3"%> ></audio>
+          <div id="quiz-id" style="display: none;"> <%= @quiz.id %> </div>
+          <div id = "frame" role = "content" >
+          <div id="top-frame" ></div>
+            <div class="seekbar">
+              <progress value="0" max="30"></progress>
+            </div>
+          <div id="bottom-frame"></div>
           </div>
-        <div id="bottom-frame"></div>
-        </div>
+      </div>
     </div>
   </div>
 </div>
-  
+    
 
 <div class="modal custom-modal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false"id="correct_modal">
   <div class="modal-dialog">
@@ -208,7 +244,6 @@ h1{
         </div>
         <div class="modal-body mymodal">
         <img src="http://media.giphy.com/media/kmYBXYUp3K8lG/giphy.gif">
-        Oopss Time out!!
         </div>          
        <div class="modal-footer">
           <a class="close" data-dismiss="modal" aria-hidden="true" id="next-question-modal-succes">Next Question</a>
