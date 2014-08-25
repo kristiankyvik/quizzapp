@@ -217,7 +217,6 @@
         }
 
           function init() {
-            console.log("/users/" + $('#user-id').text() +"/quizzes/" + $('#quiz-id').text() + ".json");
               $.ajax({
                     url: "/users/" + $('#user-id').text() +"/quizzes/" + $('#quiz-id').text() + ".json",
                     type: 'GET',
@@ -244,7 +243,7 @@
           $.ajax({
               url: "/games/start",
               type: "post",
-              data: null,
+              data: {},
               dataType: "json"
             });
             console.log($("#frame"));
