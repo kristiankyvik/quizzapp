@@ -1,3 +1,8 @@
+User.delete_all
+Quiz.delete_all
+Question.delete_all
+Choice.delete_all
+
 user = User.create(email:'test@test.com', password: 'testpassword')
 quiz = Quiz.create(title: "rap-test", user: user)
 
