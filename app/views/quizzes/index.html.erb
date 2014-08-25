@@ -132,8 +132,8 @@
             <div class="caption">
                 <h4><%= quiz.title   %></h4>
 <!--                 <p>short thumbnail description</p>
- -->                <p><div class="bat"  > <%= link_to "PLAY", user_quiz_path(current_user, quiz) %> </div>
-                <div class="bat"><%= link_to "EDIT", user_quiz_questions_path(current_user, quiz) %></div></p>
+ -->                <p><div class="bat"  > <%= link_to "PLAY", user_quiz_path(@user, quiz) %> </div>
+                <div class="bat"><%= link_to "EDIT", user_quiz_questions_path(@user, quiz) %></div></p>
             </div>
             <div><img alt="image" class="img-responsive" src=<%= quiz.questions.first.image_url %>></a></div>
         </div>
