@@ -10,6 +10,9 @@ Rails.application.routes.draw do
       post :signup
       post :client
       post :start
+      post :answer
+      post :answersheet
+      post :next_question
     end
   end
     resources :users do

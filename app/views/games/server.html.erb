@@ -1,22 +1,26 @@
 <style type="text/css">
+  
+  .hidden{
+    display:none;
+
+  }
   body{
     background-image: none;
   }
-</style>
 
+
+</style>
 <div class="container theframe" >
+  <div id="scoreboard" class="hidden"></div>
   this is the server that will host the event
   <audio autoplay loop id="audio" ></audio>
+  <button class="btn" id="see_scoreboard" >SEE SCOREBOARD</button>
    <div id="quiz-id" style="display: none;"> <%= 1 %> </div>
   <div id = "frame" role = "content" > 
     <div id="players"></div>
     <button class="btn" id="start_game" >START QUIZ</button>
   </div>
 </div>
-
-
-
-
 
 <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -28,6 +32,7 @@
       cansubmit = true,
       quiz,
       picked,
+      sheet,
       timer;
 
 
@@ -43,7 +48,13 @@
       $('#players').append('<p>'+ data.message + ' joined the game! </p>');
     });
 
-
+    channel.bind('update_score', function(data) {
+      var scores = data.message;
+      $('#scoreboard').empty();
+      for ( player_name in scores) {
+          $('<p/>').text(player_name + ":" + scores[player_name]).appendTo('#scoreboard');
+      }
+    });
 
         $(document).ready(function(){
 
@@ -67,6 +78,7 @@
 
         function setupLayout () {
           $('<h1/>').text(quiztitle).appendTo('#frame');
+          $('<button/>').attr('id', 'nextQuest').text("NEXT QUESTION").appendTo('#frame');
           $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
           $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
           $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
@@ -78,13 +90,17 @@
         }
 
         function addChoices(choices) { 
+          console.log("currentquestion: " + currentquestion);
           $('#choice-block').empty();
-          for (var i = 0; i < choices.length; i++) {
-              $('<li/>').addClass('choice choice-box').attr('data-index', i).text(choices[i].title).appendTo('#choice-block');
+          for (var i = 0; i < choices.length-1; i++) {
+            $('<li/>').addClass('choice choice-box').attr('data-index', i).text(choices[i].title).appendTo('#choice-block');
           }
+          var steal = $("#choice-block li")[sheet[currentquestion]];
+          $(steal).before("<li>" + choices[3].title + "</li>");
         }
 
         function setupButtons() {
+          listenToButtons()
           $('.choice').on('click', function () {
               clearAlert()
               choice = $(this).attr('data-index');
@@ -107,6 +123,27 @@
                   });
               }
           })
+        }
+
+
+
+        function listenToButtons(){
+          $("#see_scoreboard").on('click', function (){
+            $('#scoreboard').removeClass("hidden");
+          });
+
+          $("#nextQuest").on('click', function (){
+            console.log("clicked next question")
+
+             $.ajax({
+                     url: "/games/next_question",
+                     type: "post",
+                     data: {},
+                     dataType: "json"
+                   });
+            upCounter();
+          })
+
         }
 
         function showTimeoutBox () {
@@ -156,6 +193,27 @@
             $('h2').text(Math.round(score / quiz.length * 100) + '%').insertAfter('#question');
         }
 
+        function  createAnswerSheet(){
+          lista = [];
+          for ( var i = 0; i < quiz.length; i++ ) { 
+            lista.push(Math.floor(Math.random() * 3));
+          }
+          return lista
+        };
+
+        function sendAnswerSheet(){
+          sheet = createAnswerSheet();
+          console.log(sheet);
+          var data = {sheet: sheet};
+          $.ajax({
+                  url: "/games/answersheet",
+                  type: "post",
+                  data: data,
+                  dataType: "json"
+                });
+
+        }
+
           function init() {
               $.ajax({
                     url: "/users/1/quizzes/1.json",
@@ -170,6 +228,7 @@
                   quiztitle = Object.keys(data);
                   quiz = data[Object.keys(data)];
                   console.log(quiz)
+                  sendAnswerSheet();
                   setupLayout();
                   loadAudio(quiz[0].song);
                   timer = window.setTimeout(showTimeoutBox, 8000);
@@ -190,13 +249,6 @@
             init();
 
         });
-
-
-
-
-
-
-
     });
 
 
