@@ -10,6 +10,8 @@
 
 
 </style>
+<div id="quiz-id" style="display: none;"> <%= @quiz_id %> </div>
+<div id="user-id" style="display: none;"> <%= @user_id %> </div>
 <div class="container theframe" >
   <div id="scoreboard" class="hidden"></div>
   this is the server that will host the event
@@ -215,8 +217,9 @@
         }
 
           function init() {
+            console.log("/users/" + $('#user-id').text() +"/quizzes/" + $('#quiz-id').text() + ".json");
               $.ajax({
-                    url: "/users/2/quizzes/3.json",
+                    url: "/users/" + $('#user-id').text() +"/quizzes/" + $('#quiz-id').text() + ".json",
                     type: 'GET',
                     crossDomain : true,
                     xhrFields: {

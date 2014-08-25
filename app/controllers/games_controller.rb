@@ -12,7 +12,11 @@ class GamesController < ApplicationController
     session[:players] = []
     session[:scores] = {}
     session[:answersheet] = ""
+    @user_id =params[:user_id]
+    @quiz_id =params[:quiz_id]
   end
+  
+
 
   def start
     Pusher['test_channel'].trigger('start_game', {
