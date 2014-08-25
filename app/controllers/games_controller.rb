@@ -19,6 +19,9 @@ class GamesController < ApplicationController
 
 
   def start
+    session[:players] = []
+    session[:scores] = {}
+    session[:answersheet] = ""
     Pusher['test_channel'].trigger('start_game', {
       message: "start quiz"
     })

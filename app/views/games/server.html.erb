@@ -167,7 +167,7 @@
         function upCounter() {
             currentquestion++;
             $("#nextButton").hide();
-                if (currentquestion == quiz.length) {
+                if (currentquestion > quiz.length) {
                     endQuiz();
                 } else {     
                     nextQuestion();
