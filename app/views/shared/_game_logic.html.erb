@@ -158,7 +158,7 @@ var currentquestion = 0,
 
     function init() {
         $.ajax({
-              url: location.pathname + $("#quiz-id").text() +".json",
+              url: window.location.origin + "/users/" + $('#user-id').text() +"/quizzes/" + $("#quiz-id").text() +".json",
               type: 'GET',
               crossDomain : true,
               xhrFields: {

@@ -51,11 +51,31 @@
          background-color: #777;
         background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
       }
+      .bat{
+      letter-spacing: 2px;
+      line-height: 4.5em;
+      color: white;
+      list-style: none;
+      text-align: center;
+      background-color: #777;
+      width:40%;;
+      line-height: 60px;
+      margin: auto;
+      margin-bottom:3px;
+      }
+
+      .bat:hover {
+          cursor:pointer;
+          text-decoration: none;
+          color: #000000;
+          background-color: #33B5E5;
+      }
+
   </style>
 
 <div class="panel panel-default">
   <div class="panel-body" id = "guapa">
-    Just follow the intruccion to the right to create new questions!
+    Just follow the intruccion to the right to create new questions! <div class="bat pull-right"  > <%= link_to "PLAY", user_quiz_path(@user, @quiz) %> </div>
   </div>
 </div>
 
@@ -86,8 +106,8 @@
                                   <% count_choice = count_choice + 1 %>
                                 <% end %>
                               </ul>
-                            <%= link_to "edit", edit_user_quiz_question_path(current_user, @quiz, question), method: :get, :class => 'pull-right' %>
-                            <%= link_to "delete", user_quiz_question_path(current_user, @quiz, question), method: :delete, :class => 'pull-right' %>
+                            <%= link_to "edit", edit_user_quiz_question_path(@user, @quiz, question), method: :get, :class => 'pull-right' %>
+                            <%= link_to "delete", user_quiz_question_path(@user, @quiz, question), method: :delete, :class => 'pull-right' %>
                       </div>
                   </div><!-- End Listing-->
                   </div>

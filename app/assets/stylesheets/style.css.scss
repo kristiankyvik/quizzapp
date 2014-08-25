@@ -21,8 +21,10 @@
 		padding: 0px;
 	} 
 
+
 body { 
-	background: #ffffff; 
+	background: #ffffff;  
+  background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
 	margin: 0; 
 	height: 100%; 
 	color: #384452;
@@ -458,3 +460,13 @@ csmall2 {
 	padding-right: 15px;
 	font-size: 18px;
 }
+.theframe{
+	color:black;
+	margin-top: 40px;
+
+}	
+
+button, input{
+	color:black;
+}
+
