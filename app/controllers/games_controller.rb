@@ -49,9 +49,11 @@ class GamesController < ApplicationController
     if (session[:answersheet][question.to_i] == answer)
       session[:scores][username] += 1
     end
-    
+
     Pusher['server_channel'].trigger('update_score', {
-      message:  session[:scores]
+      message:  session[:scores],
+      answer: answer,
+      correct: session[:answersheet][question.to_i]
     })
     render :nothing => true
   end

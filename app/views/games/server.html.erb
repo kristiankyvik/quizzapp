@@ -52,9 +52,12 @@
 
     channel.bind('update_score', function(data) {
       var scores = data.message;
+      var answer = data.asnwer;
+      var correct = data.correct;
       $('#scoreboard').empty();
       for ( player_name in scores) {
           $('<p/>').text(player_name + ":" + scores[player_name]).appendTo('#scoreboard');
+          $('<p/>').text("asnwer was : " + answer + "and correct was :" + correct);
       }
     });
 
