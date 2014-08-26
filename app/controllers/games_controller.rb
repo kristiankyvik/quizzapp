@@ -39,7 +39,9 @@ class GamesController < ApplicationController
   def answersheet
     session[:answersheet] = params[:sheet]
     Pusher['server_channel'].trigger('got_answer_sheet', {
-      message: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(",")
+      sheet: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(","),
+      players: session[:players].map { |i| "'" + i.to_s + "'" }.join(","),
+      scores: session[:scores].map { |i| "'" + i.to_s + "'" }.join(",")
     })
 
     render :nothing => true

@@ -52,9 +52,11 @@
     });
 
     channel.bind('got_answer_sheet', function(data) {
-      $('<p/>').text("fuckinggggg answesheet: " + data.message).appendTo('#scoreboard');
+      $('<p/>').text("fuckinggggg answesheet: " + data.sheet).appendTo('#scoreboard');
+      $('<p/>').text("fuckinggggg scores: " + data.scores).appendTo('#scoreboard');
+    
+    $('<p/>').text("fuckinggggg players: " + data.players).appendTo('#scoreboard');
     });
-
     channel.bind('update_score', function(data) {
       var scores = data.message;
       var answer = data.answer;
