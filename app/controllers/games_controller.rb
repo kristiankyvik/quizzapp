@@ -11,7 +11,7 @@ class GamesController < ApplicationController
   def server
     session[:players] = []
     session[:scores] = {}
-    session[:answersheet] = ""
+    session[:answersheet] = []
     @user_id =params[:user_id]
     @quiz_id =params[:quiz_id]
   end
@@ -19,9 +19,7 @@ class GamesController < ApplicationController
 
 
   def start
-    session[:players] = []
-    session[:scores] = {}
-    session[:answersheet] = ""
+
     Pusher['test_channel'].trigger('start_game', {
       message: "start quiz"
     })
@@ -38,22 +36,23 @@ class GamesController < ApplicationController
   end
 
   def answersheet
-    answer_array = params[:sheet]
-    session[:answersheet] = answer_array
+    session[:answersheet] = params[:sheet]
     render :nothing => true
   end
 
   def answer
-    # username = params[:username]
-    # question = params[:question]
-    # answer = params[:answer]
-    # session[:scores][username] ||= 0
-    # if session[:answersheet][question.to_i] == answer
-    #   session[:scores][username] += 1
-    # end
-    # Pusher['server_channel'].trigger('update_score', {
-    #   message:  session[:scores]
-    # })
+    username = params[:username]
+    question = params[:question]
+    answer = params[:answer]
+    session[:scores][username] ||= 0
+
+    if (session[:answersheet][question.to_i] == answer)
+      session[:scores][username] += 1
+    end
+    
+    Pusher['server_channel'].trigger('update_score', {
+      message:  session[:scores]
+    })
     render :nothing => true
   end
 
