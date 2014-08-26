@@ -53,6 +53,7 @@ class GamesController < ApplicationController
     Pusher['server_channel'].trigger('update_score', {
       message:  session[:scores],
       answer: answer,
+      answersheet: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(","),
       correct: session[:answersheet][question.to_i]
     })
     render :nothing => true

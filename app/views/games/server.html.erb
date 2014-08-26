@@ -54,10 +54,11 @@
       var scores = data.message;
       var answer = data.answer;
       var correct = data.correct;
+      var answersheet = data.answersheet;
       $('#scoreboard').empty();
       for ( player_name in scores) {
           $('<p/>').text(player_name + ":" + scores[player_name]).appendTo('#scoreboard');
-          $('<p/>').text("asnwer was : " + answer + "and correct was :" + correct).appendTo('#scoreboard');
+          $('<p/>').text("asnwer was : " + answer + "   and correct was :" + correct + " answersheet is : " + answersheet ).appendTo('#scoreboard');
       }
     });
 
