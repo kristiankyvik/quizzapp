@@ -17,6 +17,7 @@
   this is the server that will host the event
   <audio autoplay loop id="audio" ></audio>
   <button class="btn" id="see_scoreboard" >SEE SCOREBOARD</button>
+  <button class="btn" id="refresh" >refreshhhh the session</button>
    <div id="quiz-id" style="display: none;"> <%= 1 %> </div>
   <div id = "frame" role = "content" > 
     <div id="players"></div>
@@ -47,7 +48,11 @@
     var pusher = new Pusher('0b3fd7d5eb569adb55a2');
     var channel = pusher.subscribe('server_channel');
     channel.bind('new_signup', function(data) {
-      $('#players').append('<p>'+ data.message + ' joined the game! </p>');
+      $('#players').append('<p>'+ data.message + ' that si the answer sheet </p>');
+    });
+
+    channel.bind('got_answer_sheet', function(data) {
+      $('<p/>').text("fuckinggggg answesheet: " + data.message).appendTo('#scoreboard');
     });
 
     channel.bind('update_score', function(data) {
@@ -63,6 +68,8 @@
     });
 
         $(document).ready(function(){
+          listenToButtons();
+
 
         function htmlEncode(value) {
             return $(document.createElement('div')).text(value).html();
@@ -93,6 +100,17 @@
           addChoices(quiz[0]['choices']);
           $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
           setupButtons();   
+          $("#nextQuest").on('click', function (){
+            console.log("clicked next question")
+
+             $.ajax({
+                     url: "/games/next_question",
+                     type: "post",
+                     data: {},
+                     dataType: "json"
+                   });
+            upCounter();
+          })
         }
 
         function addChoices(choices) { 
@@ -106,7 +124,6 @@
         }
 
         function setupButtons() {
-          listenToButtons()
           $('.choice').on('click', function () {
               clearAlert()
               choice = $(this).attr('data-index');
@@ -138,17 +155,15 @@
             $('#scoreboard').removeClass("hidden");
           });
 
-          $("#nextQuest").on('click', function (){
-            console.log("clicked next question")
+          $("#refresh").on('click', function (){
+            $.ajax({
+                    url: "/games/refresh",
+                    type: "post",
+                    data: {},
+                    dataType: "json"
+                  })
+          });
 
-             $.ajax({
-                     url: "/games/next_question",
-                     type: "post",
-                     data: {},
-                     dataType: "json"
-                   });
-            upCounter();
-          })
 
         }
 
@@ -217,7 +232,7 @@
                   data: data,
                   dataType: "json"
                 });
-
+          console.log(data.sheet)
         }
 
           function init() {
@@ -238,6 +253,7 @@
                   setupLayout();
                   loadAudio(quiz[0].song);
                   timer = window.setTimeout(showTimeoutBox, 8000);
+
                 });
 
           }

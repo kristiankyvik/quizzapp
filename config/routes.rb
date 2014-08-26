@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post :answer
       post :answersheet
       post :next_question
+      post :refresh
     end
   end
     resources :users do

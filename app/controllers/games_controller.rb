@@ -9,17 +9,18 @@ class GamesController < ApplicationController
   end
 
   def server
-    session[:players] = []
-    session[:scores] = {}
-    session[:answersheet] = []
     @user_id =params[:user_id]
     @quiz_id =params[:quiz_id]
   end
+
+  def refresh
+    session[:players] = []
+    session[:scores] = {}
+    session[:answersheet] = []
+    render :nothing => true
+  end
   
-
-
   def start
-
     Pusher['test_channel'].trigger('start_game', {
       message: "start quiz"
     })
@@ -37,6 +38,10 @@ class GamesController < ApplicationController
 
   def answersheet
     session[:answersheet] = params[:sheet]
+    Pusher['server_channel'].trigger('got_answer_sheet', {
+      message: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(",")
+    })
+
     render :nothing => true
   end
 
