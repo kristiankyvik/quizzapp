@@ -67,11 +67,10 @@ class GamesController < ApplicationController
   end
 
   def signup
-    username = params[:username]
-    session[:players] ||= []
-    session[:players] << params[:username]
+    player_name = params[:username]
+    session[:players] << player_name
     Pusher['server_channel'].trigger('new_signup', {
-      message: username
+      message: player_name
     })
 
     respond_to do |format|
