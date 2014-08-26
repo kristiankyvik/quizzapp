@@ -13,7 +13,7 @@ class GamesController < ApplicationController
   end
 
   def refresh
-    session[:players] = ["nicjasds", "sdsdsds"]
+    session[:players] = []
     session[:scores] = {}
     session[:answersheet] = []
     render :nothing => true
