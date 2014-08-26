@@ -1,5 +1,4 @@
 class GamesController < ApplicationController
-  @@scores = {}
 
   def index
     Pusher['test_channel'].trigger('my_event', {
@@ -14,7 +13,7 @@ class GamesController < ApplicationController
   end
 
   def refresh
-    session[:players] = []
+    session[:players] = ["nicjasds", "sdsdsds"]
     session[:scores] = {}
     session[:answersheet] = []
     render :nothing => true
