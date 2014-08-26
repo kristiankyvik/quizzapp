@@ -44,16 +44,16 @@ class GamesController < ApplicationController
   end
 
   def answer
-    username = params[:username]
-    question = params[:question]
-    answer = params[:answer]
-    session[:scores][username] ||= 0
-    if session[:answersheet][question.to_i] == answer
-      session[:scores][username] += 1
-    end
-    Pusher['server_channel'].trigger('update_score', {
-      message:  session[:scores]
-    })
+    # username = params[:username]
+    # question = params[:question]
+    # answer = params[:answer]
+    # session[:scores][username] ||= 0
+    # if session[:answersheet][question.to_i] == answer
+    #   session[:scores][username] += 1
+    # end
+    # Pusher['server_channel'].trigger('update_score', {
+    #   message:  session[:scores]
+    # })
     render :nothing => true
   end
 
