@@ -70,7 +70,7 @@ class GamesController < ApplicationController
     player_name = params[:username]
     session[:players] << player_name
     Pusher['server_channel'].trigger('new_signup', {
-      message: player_name
+      message:  session[:players].map { |i| "'" + i.to_s + "'" }.join(",")
     })
 
     respond_to do |format|
