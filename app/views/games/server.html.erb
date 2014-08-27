@@ -3,6 +3,10 @@
   .hidden{
     visibility:hidden;
   }
+  .hidden-real{
+    display:none;
+  }
+
   body{
     background-image: none;
   }
@@ -178,9 +182,15 @@
     }
   }
 
+  #log{
+    color: white;
+  }
+
 
 
 </style>
+
+ 
 
 <div id="quiz-id" style="display: none;"> <%= @quiz_id %> </div>
 <div id="user-id" style="display: none;"> <%= @user_id %> </div>
@@ -188,8 +198,18 @@
 <div class="container theframe" >
   <div id="scoreboard" class=""></div> <!-- //took hidden out -->
   <audio autoplay loop id="audio" ></audio>
-  <div id="players"></div>
+  
 
+  <div class="container mt" id= "start-dash">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1 centered">
+        <button class="btn" id="start_game" >START QUIZ</button>
+        <h1>Players Joining us today:</h1>
+        <div id="players"></div>
+        <div id="log"></div>
+      </div>
+    </div>
+  </div>  
 
    <div id="box-loader" class= "hidden">
      <div class="loader" id="circles">
@@ -212,7 +232,6 @@
       </div>     
 </div>
 <div class="row"> 
-  <button class="btn pull-left" id="start_game" >START QUIZ</button>
   <button class="btn pull-right" id="nextQuest" >NEXT QUESTION</button>
 </div> 
 
@@ -237,8 +256,12 @@
 
     var pusher = new Pusher('0b3fd7d5eb569adb55a2');
     var channel = pusher.subscribe('server_channel');
+
     channel.bind('new_signup', function(data) {
-      $('#players').append('<p>'+ data.message + ' that si the answer sheet </p>');
+      var user_name = data.message;
+      $('#log').append("@ " + user_name+ " just joined the quiz party</br>");
+      var image_block = $('<img>').attr('src', "http://twitter.com/api/users/profile_image/"+ user_name +"?size=bigger");
+      $('#players').append(image_block);
     });
 
     channel.bind('got_answer_sheet', function(data) {
@@ -296,6 +319,7 @@
           setupButtons(); 
 
           $("#nextQuest").on('click', function (){
+
             console.log("clicked next question");
             $('#todo')[0].className = "hidden";
             $('#scoreboard').empty();
@@ -437,11 +461,11 @@
                   
 
                 });
-
           }
 
 
         $("#start_game").click(function(){
+          $('#start-dash').remove();
           $.ajax({
               url: "/games/start",
               type: "post",
