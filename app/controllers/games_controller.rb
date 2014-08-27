@@ -6,11 +6,11 @@ class GamesController < ApplicationController
   end
 
   def server
-    Game.destroy(100)
-
+    Game.delete_all
+    Player.delete_all
     @user_id =params[:user_id]
     @quiz_id =params[:quiz_id]
-    @game = Game.create(id: 100, cheatsheet: [])
+    @game = Game.create(cheatsheet: [])
   end
 
   
@@ -32,7 +32,7 @@ class GamesController < ApplicationController
 
   def answersheet
     sheet = params[:sheet]
-    game = Game.find(100)
+    game = Game.first
     game.cheatsheet = sheet
     game.save
 
@@ -44,7 +44,7 @@ class GamesController < ApplicationController
     username = params[:username]
     question = params[:question]
     answer = params[:answer]
-    game = Game.find(100)
+    game = Game.first
     player = game.players.find_by(username: username)
     puts "#"*40
     puts game.cheatsheet[question.to_i]
@@ -64,7 +64,7 @@ class GamesController < ApplicationController
 
   def signup
     username = params[:username]
-    game = Game.find(100)
+    game = Game.first
     game.players.create(username: username)
     Pusher['server_channel'].trigger('new_signup', {
       message: username
