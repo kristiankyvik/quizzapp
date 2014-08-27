@@ -9,7 +9,7 @@
 
   @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:700italic);
   body {
-    background-color: white;  
+    background-color: black;  
   }
   #countdown {
     font-family: 'Roboto Condensed', sans-serif;
@@ -17,10 +17,10 @@
     height: 100px;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 25%;
     margin-left: -100px;
     margin-top: -50px;
-    color: black;
+    color: white;
     font-size: 5em;
     text-align: center;
     font-weight: bold;
@@ -34,7 +34,7 @@
   h1{
     font-family: 'Actor', sans-serif;
     color:#FFF;
-    font-size:16px;
+    font-size:32px;
     letter-spacing:1px;
     font-weight:200;
     text-align:center;
@@ -70,9 +70,53 @@
     -moz-animation:kanan 1.2s infinite linear;
     -o-animation:kanan 1.2s infinite linear;
   }
+  ul{
+      list-style-type: none;
+  }
+
+  #frame{
+    margin-top: -40px;
+
+  }
+
+  #question{
+    margin-bottom:60px;
+  }
 
 
+  #choice-block li {
+    letter-spacing: 2px;
+    line-height: 4.5em;
+    font-family:Montserrat;
+    color: white;
+    list-style: none;
+    text-align: center;
+    width:40%;;
+    line-height: 60px;
+    margin: auto;
+    margin-bottom:3px;
+  }
 
+  #choice-block li:nth-of-type(1) {
+      background: #2980b9;
+  }
+
+  #choice-block li:nth-of-type(2) {
+      background: #e74c3c;
+  }
+
+  #choice-block li:nth-of-type(3) {
+      background: #27ae60;
+  }
+
+  #choice-block li:nth-of-type(4) {
+      background: #e67e22;
+
+  }
+
+  body div{
+    color:white;
+  }
 
   @-webkit-keyframes kanan {
       0% {-webkit-transform:translateX(20px);
@@ -145,9 +189,7 @@
   <div id="scoreboard" class=""></div> <!-- //took hidden out -->
   <audio autoplay loop id="audio" ></audio>
   <div id="players"></div>
-  <button class="btn" id="start_game" >START QUIZ</button>
-  <button class="btn" id="see_scoreboard" >SEE SCOREBOARD</button>
-  <button class="btn" id="nextQuest" >NEXT QUESTION</button>
+
 
    <div id="box-loader" class= "hidden">
      <div class="loader" id="circles">
@@ -167,9 +209,12 @@
             <div id="timeup"></div>
           </div>
         </div>
-      </div>
-          
+      </div>     
 </div>
+<div class="row"> 
+  <button class="btn pull-left" id="start_game" >START QUIZ</button>
+  <button class="btn pull-right" id="nextQuest" >NEXT QUESTION</button>
+</div> 
 
 <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -202,7 +247,6 @@
       $('<p/>').text("fuckinggggg players: " + data.players).appendTo('#scoreboard');
     });
     channel.bind('update_score', function(data) {
-      console.log("update scoree")
       var username = data.username;
       var score = data.score;
       var answer = data.answer;
@@ -210,7 +254,6 @@
     });
 
         $(document).ready(function(){
-          listenToButtons();
 
         function htmlEncode(value) {
             return $(document.createElement('div')).text(value).html();
@@ -243,11 +286,10 @@
 
 
         function setupLayout () {
-          $('<h1/>').text(quiztitle).appendTo('#frame');
-          $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
-          $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
+          $('<div/>').text(quiztitle).appendTo('#frame');
+          $('<div/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
+          $('<h1/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
           $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
-          $('<p/>').addClass('explanation').attr('id', 'explanation').html('&nbsp;').appendTo('#frame');
           $('<ul/>').attr('id', 'choice-block').appendTo('#frame');
           addChoices(quiz[0]['choices']);
           $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
@@ -255,6 +297,7 @@
 
           $("#nextQuest").on('click', function (){
             console.log("clicked next question");
+            $('#todo')[0].className = "hidden";
             $('#scoreboard').empty();
              $.ajax({
                      url: "/games/next_question",
@@ -280,11 +323,8 @@
           $('.choice').on('click', function () {
               choice = $(this).attr('data-index');
               if (quiz[currentquestion]['choices'][choice].correct) {
-                  $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
                   score++;
-              } else {
-              $('#explanation').html('<strong>Incorrect.</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
-              }
+              } 
               $("#nextButton").show();
               if (cansubmit) {
                   cansubmit = false;
@@ -298,12 +338,6 @@
 
 
 
-        function listenToButtons(){
-          $("#see_scoreboard").on('click', function (){
-            $('#scoreboard').removeClass("hidden");
-          });
-
-        }
 
         function upCounter() {
             $('#box-loader')[0].className="loader";
@@ -319,7 +353,6 @@
 
         function nextQuestion() {
             cansubmit = true;
-            $('#explanation').empty();
             loadAudio(quiz[currentquestion]['song']);
             $('#question').text(quiz[currentquestion]['question']);
             $('#questionCounterBanner').text('Question ' + Number(currentquestion + 1) + ' of ' + quiz.length);  
@@ -336,7 +369,7 @@
               startNum = n;
             }
             $('#countdown').delay(600).hide(400, function () {
-              if (n === 1){
+              if (n === 0){
                 $(this).html("");
                 
               } else{
@@ -352,7 +385,6 @@
         function endQuiz() {
             $('#box-loader').remove();
             $('#countdown').empty();
-            $('#explanation').empty();
             $('#question').empty();
             $('#choice-block').empty();
             $('#nextButton').remove();
