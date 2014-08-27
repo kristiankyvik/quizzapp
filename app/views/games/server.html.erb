@@ -1,34 +1,179 @@
 <style type="text/css">
   
   .hidden{
-    display:none;
-
+    visibility:hidden;
   }
   body{
     background-image: none;
   }
 
+  @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:700italic);
+  body {
+    background-color: white;  
+  }
+  #countdown {
+    font-family: 'Roboto Condensed', sans-serif;
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -50px;
+    color: black;
+    font-size: 5em;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+  } 
+
+
+  .loader{
+    margin:200px auto;
+  }
+  h1{
+    font-family: 'Actor', sans-serif;
+    color:#FFF;
+    font-size:16px;
+    letter-spacing:1px;
+    font-weight:200;
+    text-align:center;
+  }
+  .loader span{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:inline-block;
+    position:absolute;
+    left:50%;
+    margin-left:-10px;
+    -webkit-animation:3s infinite linear;
+    -moz-animation:3s infinite linear;
+    -o-animation:3s infinite linear;
+    
+  }
+
+  .loader span:nth-child(2){
+    background:#E84C3D;
+    -webkit-animation:kiri 1.2s infinite linear;
+    -moz-animation:kiri 1.2s infinite linear;
+    -o-animation:kiri 1.2s infinite linear;
+    
+  }
+  .loader span:nth-child(3){
+    background:#F1C40F;
+    z-index:100;
+  }
+  .loader span:nth-child(4){
+    background:#2FCC71;
+    -webkit-animation:kanan 1.2s infinite linear;
+    -moz-animation:kanan 1.2s infinite linear;
+    -o-animation:kanan 1.2s infinite linear;
+  }
+
+
+
+
+  @-webkit-keyframes kanan {
+      0% {-webkit-transform:translateX(20px);
+      }
+    50%{-webkit-transform:translateX(-20px);
+    }
+    
+    100%{-webkit-transform:translateX(20px);
+    z-index:200;
+    }
+  }
+  @-moz-keyframes kanan {
+      0% {-moz-transform:translateX(20px);
+      }
+     
+    50%{-moz-transform:translateX(-20px);
+    }
+    
+    100%{-moz-transform:translateX(20px);
+    z-index:200;
+    }
+  }
+  @-o-keyframes kanan {
+      0% {-o-transform:translateX(20px);
+      }
+    50%{-o-transform:translateX(-20px);
+    }
+    100%{-o-transform:translateX(20px);
+    z-index:200;
+    }
+  }
+
+  @-webkit-keyframes kiri {
+       0% {-webkit-transform:translateX(-20px);
+    z-index:200;
+      }
+    50%{-webkit-transform:translateX(20px);
+    }
+    100%{-webkit-transform:translateX(-20px);
+    }
+  }
+
+  @-moz-keyframes kiri {
+       0% {-moz-transform:translateX(-20px);
+    z-index:200;
+      }
+    50%{-moz-transform:translateX(20px);
+    }
+    100%{-moz-transform:translateX(-20px);
+    }
+  }
+  @-o-keyframes kiri {
+       0% {-o-transform:translateX(-20px);
+    z-index:200;
+      }
+    50%{-o-transform:translateX(20px);
+    }
+    100%{-o-transform:translateX(-20px);
+    }
+  }
+
+
 
 </style>
+
 <div id="quiz-id" style="display: none;"> <%= @quiz_id %> </div>
 <div id="user-id" style="display: none;"> <%= @user_id %> </div>
+
 <div class="container theframe" >
   <div id="scoreboard" class=""></div> <!-- //took hidden out -->
-  this is the server that will host the event
   <audio autoplay loop id="audio" ></audio>
+  <div id="players"></div>
+  <button class="btn" id="start_game" >START QUIZ</button>
   <button class="btn" id="see_scoreboard" >SEE SCOREBOARD</button>
-  <button class="btn" id="refresh" >refreshhhh the session</button>
-   <div id="quiz-id" style="display: none;"> <%= 1 %> </div>
-  <div id = "frame" role = "content" > 
-    <div id="players"></div>
-    <button class="btn" id="start_game" >START QUIZ</button>
+  <button class="btn" id="nextQuest" >NEXT QUESTION</button>
+
+   <div id="box-loader" class= "hidden">
+     <div class="loader" id="circles">
+         <h1>LOADING</h1>
+         <span></span>
+         <span></span>
+         <span></span>
+     </div>
   </div>
+  <div id="todo" class="hidden">
+    <div class="container mt">
+        <div class="row">
+          <div class="col-lg-10 col-lg-offset-1 centered">
+            <div id="countdown"></div>
+              <div id = "frame" class= "row" role = "content" > 
+            </div>
+            <div id="timeup"></div>
+          </div>
+        </div>
+      </div>
+          
 </div>
 
 <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
-
   var quiztitle ;
   var currentquestion = 0,
       score = 0,
@@ -36,7 +181,7 @@
       quiz,
       picked,
       sheet,
-      timer;
+      startNum;
 
 
   Pusher.log = function(message) {
@@ -67,28 +212,38 @@
         $(document).ready(function(){
           listenToButtons();
 
-
         function htmlEncode(value) {
             return $(document.createElement('div')).text(value).html();
         }
 
         var loadAudio = function (link){
+          console.log("load auido")
           $.ajax({
-                  url: "https://api.spotify.com/v1/tracks/"+link,
-                  type: 'GET',
-                  crossDomain : true,
-                  xhrFields: {
+              url: "https://api.spotify.com/v1/tracks/"+link,
+              type: 'GET',
+              crossDomain : true,
+              xhrFields: {
               },
-                  success: function(data) {
-                    audio.setAttribute('src', data.preview_url);
-                    audio.play();
+              success: function(data) {
+                audio.setAttribute('src', data.preview_url);
                   }
               })
         };
 
+
+        audio.addEventListener('canplaythrough', function() {
+           $('#box-loader')[0].className="loader hidden";
+           $('#todo')[0].className = "";
+           anim(3);
+           audio.play();
+           audio.volume=0.3;
+         }, false);
+
+
+
+
         function setupLayout () {
           $('<h1/>').text(quiztitle).appendTo('#frame');
-          $('<button/>').attr('id', 'nextQuest').text("NEXT QUESTION").appendTo('#frame');
           $('<p/>').addClass('questionCounterBanner').attr('id', 'questionCounterBanner').text('Question 1 of ' + quiz.length).appendTo('#frame');
           $('<p/>').addClass('question').attr('id', 'question').text(quiz[0]['question_title']).appendTo('#frame');
           $('<img/>').addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
@@ -96,12 +251,11 @@
           $('<ul/>').attr('id', 'choice-block').appendTo('#frame');
           addChoices(quiz[0]['choices']);
           $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
-          setupButtons();   
+          setupButtons(); 
+
           $("#nextQuest").on('click', function (){
             console.log("clicked next question");
             $('#scoreboard').empty();
-
-
              $.ajax({
                      url: "/games/next_question",
                      type: "post",
@@ -124,11 +278,7 @@
 
         function setupButtons() {
           $('.choice').on('click', function () {
-              clearAlert()
               choice = $(this).attr('data-index');
-              console.log(choice);
-              console.log(currentquestion);
-              console.log(quiz[currentquestion]['choices'][choice].title + "sasasa" + quiz[currentquestion]['choices']['correct']);
               if (quiz[currentquestion]['choices'][choice].correct) {
                   $('#explanation').html('<strong>Correct!</strong> ' + htmlEncode(quiz[currentquestion]['explanation']));
                   score++;
@@ -141,7 +291,6 @@
                   $("#nextButton").click(function(){
                        $('.choice').off('click');
                       $(this).off('click');
-                      upCounter();
                   });
               }
           })
@@ -154,42 +303,18 @@
             $('#scoreboard').removeClass("hidden");
           });
 
-          $("#refresh").on('click', function (){
-            $.ajax({
-                    url: "/games/refresh",
-                    type: "post",
-                    data: {},
-                    dataType: "json"
-                  })
-          });
-
-
-        }
-
-        function showTimeoutBox () {
-          $('#myModal').modal({show:true})
-          clearAlert();
-          $("#next-question-modal").click(function(){
-              console.log("clickkkk modall")
-              $('.choice').off('click');
-              $(this).off('click');
-              upCounter();
-          });
-        }
-
-        function clearAlert() {
-          window.clearTimeout(timer);
-          console.log("alert cleared!!!");
         }
 
         function upCounter() {
+            $('#box-loader')[0].className="loader";
             currentquestion++;
             $("#nextButton").hide();
-                if (currentquestion > quiz.length) {
-                    endQuiz();
-                } else {     
-                    nextQuestion();
-                }
+            if (currentquestion == quiz.length) {
+                  endQuiz();
+              } else {
+                  console.log("nextQuestion")     
+                  nextQuestion();
+              }
         }
 
         function nextQuestion() {
@@ -201,16 +326,39 @@
             $('#question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question']));
             addChoices(quiz[currentquestion]['choices']);
             setupButtons();
-            timer = window.setTimeout(showTimeoutBox, 8000)
+        }
+
+        function anim(n) {   
+          console.log(n);  
+          $('#countdown').fadeIn('fast', function() {
+            if ($(this).html() == "") {
+            $(this).html(n); // init first time based on n
+              startNum = n;
+            }
+            $('#countdown').delay(600).hide(400, function () {
+              if (n === 1){
+                $(this).html("");
+                
+              } else{
+                n--;
+                $(this).html(n);
+                anim(n);
+              } 
+            }); 
+
+          });
         }
 
         function endQuiz() {
+            $('#box-loader').remove();
+            $('#countdown').empty();
             $('#explanation').empty();
             $('#question').empty();
             $('#choice-block').empty();
             $('#nextButton').remove();
             $('#question').text("You got " + score + " out of " + quiz.length + " correct.");
             $('h2').text(Math.round(score / quiz.length * 100) + '%').insertAfter('#question');
+
         }
 
         function  createAnswerSheet(){
@@ -235,6 +383,8 @@
         }
 
           function init() {
+              $('#box-loader')[0].className="loader";
+
               $.ajax({
                     url: "/users/" + $('#user-id').text() +"/quizzes/" + $('#quiz-id').text() + ".json",
                     type: 'GET',
@@ -251,7 +401,8 @@
                   sendAnswerSheet();
                   setupLayout();
                   loadAudio(quiz[0].song);
-                  timer = window.setTimeout(showTimeoutBox, 8000);
+
+                  
 
                 });
 
@@ -276,8 +427,8 @@
 
 
 
-      
 
 
 
   </script>
+
