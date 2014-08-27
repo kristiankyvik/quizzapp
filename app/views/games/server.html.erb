@@ -54,19 +54,14 @@
     channel.bind('got_answer_sheet', function(data) {
       $('<p/>').text("fuckinggggg answesheet: " + data.sheet).appendTo('#scoreboard');
       $('<p/>').text("fuckinggggg scores: " + data.scores).appendTo('#scoreboard');
-    
-    $('<p/>').text("fuckinggggg players: " + data.players).appendTo('#scoreboard');
+      $('<p/>').text("fuckinggggg players: " + data.players).appendTo('#scoreboard');
     });
     channel.bind('update_score', function(data) {
-      var scores = data.message;
+      console.log("update scoree")
+      var username = data.username;
+      var score = data.score;
       var answer = data.answer;
-      var correct = data.correct;
-      var answersheet = data.answersheet;
-      $('#scoreboard').empty();
-      for ( player_name in scores) {
-          $('<p/>').text(player_name + ":" + scores[player_name]).appendTo('#scoreboard');
-          $('<p/>').text("asnwer was : " + answer + "   and correct was :" + correct + " answersheet is : " + answersheet ).appendTo('#scoreboard');
-      }
+      $('<p/>').text(username + " answered " + answer + " and has " + score + " points ").appendTo('#scoreboard');
     });
 
         $(document).ready(function(){
@@ -103,7 +98,9 @@
           $('<div/>').addClass('choice-box').attr('id', 'nextButton').text('NextQuestion').appendTo('#frame').hide();
           setupButtons();   
           $("#nextQuest").on('click', function (){
-            console.log("clicked next question")
+            console.log("clicked next question");
+            $('#scoreboard').empty();
+
 
              $.ajax({
                      url: "/games/next_question",

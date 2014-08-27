@@ -1,23 +1,18 @@
 class GamesController < ApplicationController
 
+
   def index
-    Pusher['test_channel'].trigger('my_event', {
-      message: 'hello world'
-    })
-    render 'play'
+
   end
 
   def server
+    Game.destroy(100)
+
     @user_id =params[:user_id]
     @quiz_id =params[:quiz_id]
+    @game = Game.create(id: 100, cheatsheet: [])
   end
 
-  def refresh
-    session[:players] = []
-    session[:scores] = {}
-    session[:answersheet] = []
-    render :nothing => true
-  end
   
   def start
     Pusher['test_channel'].trigger('start_game', {
@@ -36,12 +31,11 @@ class GamesController < ApplicationController
   end
 
   def answersheet
-    session[:answersheet] = params[:sheet]
-    Pusher['server_channel'].trigger('got_answer_sheet', {
-      sheet: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(","),
-      players: session[:players].map { |i| "'" + i.to_s + "'" }.join(","),
-      scores: session[:scores].map { |i| "'" + i.to_s + "'" }.join(",")
-    })
+    sheet = params[:sheet]
+    game = Game.find(100)
+    game.cheatsheet = sheet
+    game.save
+
 
     render :nothing => true
   end
@@ -50,28 +44,31 @@ class GamesController < ApplicationController
     username = params[:username]
     question = params[:question]
     answer = params[:answer]
-    session[:scores][username] ||= 0
-
-    if (session[:answersheet][question.to_i] == answer)
-      session[:scores][username] += 1
+    game = Game.find(100)
+    player = game.players.find_by(username: username)
+    puts "#"*40
+    puts game.cheatsheet[question.to_i]
+    puts answer
+    if (game.cheatsheet[question.to_i] == answer.to_i)
+      player.score += 1
+      player.save!
     end
 
     Pusher['server_channel'].trigger('update_score', {
-      message:  session[:scores],
+      username: username,
       answer: answer,
-      answersheet: session[:answersheet].map { |i| "'" + i.to_s + "'" }.join(","),
-      correct: session[:answersheet][question.to_i]
+      score: player.score 
     })
     render :nothing => true
   end
 
   def signup
-    player_name = params[:username]
-    session[:players] << player_name
+    username = params[:username]
+    game = Game.find(100)
+    game.players.create(username: username)
     Pusher['server_channel'].trigger('new_signup', {
-      message:  session[:players].map { |i| "'" + i.to_s + "'" }.join(",")
+      message: username
     })
-
     respond_to do |format|
           format.json {
             render json: { :message => "message"}
