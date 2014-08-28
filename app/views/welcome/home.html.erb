@@ -20,23 +20,7 @@
   </div> <!-- /container -->
 </div><!-- /headerwrap -->
 
-<div class="container" id= "quizzes-portfolio">
-  <div class="row">
-    <% Quiz.all.each do |quiz| %>
-      <div class="col-md-3">            
-        <div class="thumbnail">
-            <div class="caption">
-                <h4><%= quiz.title   %></h4>
-<!--                 <p>short thumbnail description</p>
- -->                <p><div class="bat"  > <%= link_to "PLAY", user_quiz_path(quiz.user, quiz) %> </div></p>
-            </div>
-            <div><img alt="image" class="img-responsive" src=<%= quiz.questions.first.image_url %>></a></div>
-        </div>
-  </div>
 
-    <% end %>
-      
-  </div><!--/row-->
 </div>
 <% content_for :head do %>
   <style type="text/css">
