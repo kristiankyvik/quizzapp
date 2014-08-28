@@ -6,9 +6,9 @@ class QuizzesController < ApplicationController
   end
 
   def index
-    @quizzes = Quiz.all
-    @quiz = Quiz.new
     @user = User.find(params[:user_id])
+    @quizzes = @user.quizzes
+    @quiz = Quiz.new
   end
 
   def create
