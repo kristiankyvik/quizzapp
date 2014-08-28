@@ -30,7 +30,7 @@ var currentquestion = 0,
               $('#box-loader')[0].className="loader hidden";
               $('#todo')[0].className = "";
               audio.play();
-              audio.volume=0.3;
+              audio.volume=0.5;
               if (currentquestion < quiz.length && first_time == true) {
                 clearAlert();
                 timer = window.setTimeout(showTimeoutBox, 8000); 

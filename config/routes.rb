@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :games do
     collection do
       get :sign_in
-      get :play
       get :server
       get :client
       post :signup

@@ -1,84 +1,10 @@
-  
-  <style type="text/css">
-        li {
-        inline;
-      }
-      .panel {
-          border: 0;
-      }
-      #draggablePanelList .panel-heading {
-          cursor: move;
-      }
-      .clickable
-      {
-          cursor: pointer;
-      }
-      #guapa{
-         background-color: #e74c3c; 
-      }
-      .panel-heading span
-      {  
-          margin-top: -13px;
-          font-size: 15px;
-          margin-right: -9px;
-      }
-      a.clickable { color: inherit; }
-      a.clickable:hover { text-decoration:none; }
-      #chosenSong{
-        font-size: 13px;
-
-      }
-
-      #instruccions{
-        color:white;
-      }
-
-      input{
-        color:black;
-      }
-
-      button{
-        color:black;
-      }
-
-
-      li{
-        cursor: pointer;
-      }
-      body {
-
-        font-family: Montserrat;
-         background-color: #777;
-        background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
-      }
-      .bat{
-      letter-spacing: 2px;
-      line-height: 4.5em;
-      color: white;
-      list-style: none;
-      text-align: center;
-      background-color: #777;
-      width:40%;;
-      line-height: 60px;
-      margin: auto;
-      margin-bottom:3px;
-      }
-
-      .bat:hover {
-          cursor:pointer;
-          text-decoration: none;
-          color: #000000;
-          background-color: #33B5E5;
-      }
-
-  </style>
 
 <div class="panel panel-default">
   <div class="panel-body" id = "guapa">
-    Just follow the intruccion to the right to create new questions! <div class="bat pull-right"  > <%= link_to "PLAY", user_quiz_path(@user, @quiz) %> </div>
+   <div class="bat pull-left"  > <%= link_to "PLAY", user_quiz_path(@user, @quiz), 'data-no-turbolink' => true %> </div>
+    <div class="bat pull-right"  > <%= link_to "LAUNCH QUIZ PARTY",  server_games_path(:user_id => @user.id, :quiz_id => @quiz.id ), 'data-no-turbolink' => true %> </div>
   </div>
 </div>
-
 
   <div class="container">
     <div class="col-md-5">
@@ -161,14 +87,17 @@
   </div> 
   </div>
   </div>
-  <div class="bat pull-right"  > <%= link_to "LAUNCH QUIZ PARTY",  server_games_path(:user_id => @user.id, :quiz_id => @quiz.id ) %> </div>
 </div><!-- container -->
 
 <% content_for :head do %>
+  <style type="text/css">
+    <%= render :partial => "shared/questions_index_style" %>
+  </style>
   <script type="text/javascript">
     <%= render :partial => "shared/init_accordion" %>
     <%= render :partial => "shared/form_logic" %>
     <%= render :partial => "shared/order_questions" %>
-
   </script>
 <% end %>
+
+

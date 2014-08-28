@@ -1,8 +1,3 @@
-<style type="text/css">
-  body{
-    background-image: none;
-  }
-</style>
 
 <div id="player_username" style="display: none;"></div>
 <div class="container theframe">
@@ -16,148 +11,12 @@
   </div>
 </div>
 
-
-
-<style type="text/css">
-    #frame {
-        height:500px;
-        width: 100%;
-    }
-    .box {
-        width: 100%;
-        height: 35%;
-        float: left;
-    }
-
-    .box:nth-of-type(1) {
-        background: #2980b9;
-    }
-
-    .box:nth-of-type(2) {
-        background: #e74c3c;
-        border-left: 1px solid #f00;
-    }
-
-    .box:nth-of-type(3) {
-        background: #27ae60;
-        border-top: 1px solid #f00;
-    }
-
-    .box:nth-of-type(4) {
-        background: #e67e22;
-        border-top: 1px solid #f00;
-        border-left: 1px solid #f00;
-    }
-</style>
-
-<script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-
-<script type="text/javascript">
-var counter = 0;
-
-
-
-  Pusher.log = function(message) {
-        if (window.console && window.console.log) {
-          window.console.log(message);
-        }
-      };
-
-  var pusher = new Pusher('0b3fd7d5eb569adb55a2');
-  var channel = pusher.subscribe('test_channel');
-  
-  channel.bind('start_game', function(data) {
-    $("#frame").empty().addClass("activated");
-
-    $("#frame").append('<div class="box" id="c0"></div><div class="box" id="c1"></div><div class="box"  id="c2"></div><div class="box" id="c3"></div>');
-    listenChoices();
-  });
-
-  channel.bind('next_question', function(data) {
-
-    $("#frame").empty().append('<div class="box" id="c0"></div><div class="box" id="c1"></div><div class="box"  id="c2"></div><div class="box" id="c3"></div>');
-    listenChoices();
-  });
-
-  channel.bind('ranking', function(data) {
-    var players = data.message;
-    var arrayLength = players.length;
-    $("#frame").empty();
-    for (var i = 0; i < arrayLength; i++) {
-        $('<p/>').text(players[i].username + " got " + players[i].score).appendTo('#frame');
-    }
-  });
-
-
-
-  var listenChoices = function() {
-    var username = $("#player_username")[0].value;
-
-    $('#c0').on('click', function(e) {
-      console.log("choice 0");
-      $("#frame").empty().text("you answered        Lets wait for the next question!");
-      sendAnswer(username, counter, 0);
-
-    });
-
-    $('#c1').on('click', function(e) {
-      console.log("choice 1");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
-      sendAnswer(username, counter, 1);
-      
-    });
-
-    $('#c2').on('click', function(e) {
-      console.log("choice 2");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
-      sendAnswer(username, counter, 2);
-      
-      
-    });
-
-    $('#c3').on('click', function(e) {
-      console.log("choice 3");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
-      sendAnswer(username, counter, 3);
-      
-    });
-
-  }
-
-  
-var sendAnswer = function(username, question_number, choice){
-  counter += 1;
-  var data = {username: username,
-              question: question_number,
-              answer: choice };
-  $.ajax({
-          url: "/games/answer",
-          type: "post",
-          data: data,
-          dataType: "json"
-
-        });
-};
-
-
-var setUpLobby = function() {
-  $("#frame").empty();
-};
-
-
- $("#send_user_name").click(function(){
-    var username = $("#username").val();
-    console.log(username);
-    $("#player_username")[0].value = username;
-    var data = {username: username};
-    $.ajax({
-          url: "/games/signup",
-          type: "post",
-          data: data,
-          dataType: "json"
-        });
-    setUpLobby();
-    });
-</script>
+<% content_for :head do %>
+  <style type="text/css">
+    <%= render :partial => "shared/client_style" %>
+  </style>
+  <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    <%= render :partial => "shared/client_logic" %>
+  </script>
+<% end %>
