@@ -13,6 +13,17 @@ class GamesController < ApplicationController
     @game = Game.create(cheatsheet: [])
   end
 
+  def end_quiz
+    ranking = Player.all
+    Pusher['server_channel'].trigger('ranking', {
+      message: ranking
+    })
+    Pusher['test_channel'].trigger('ranking', {
+      message: ranking
+    })
+    render :nothing => true
+  end
+
   
   def start
     Pusher['test_channel'].trigger('start_game', {

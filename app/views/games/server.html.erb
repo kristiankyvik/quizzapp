@@ -21,7 +21,7 @@
     height: 100px;
     position: absolute;
     left: 50%;
-    top: 25%;
+    top: 30%;
     margin-left: -100px;
     margin-top: -50px;
     color: white;
@@ -196,7 +196,7 @@
 <div id="user-id" style="display: none;"> <%= @user_id %> </div>
 
 <div class="container theframe" >
-  <div id="scoreboard" class=""></div> <!-- //took hidden out -->
+   <!-- //took hidden out -->
   <audio autoplay id="audio" ></audio>
   
 
@@ -233,6 +233,7 @@
 </div>
 <div class="row"> 
   <button class="btn pull-right" id="nextQuest" >NEXT QUESTION</button>
+  <div id="scoreboard" class=""></div>
 </div> 
 
 <script src="//js.pusher.com/2.2/pusher.js" type="text/javascript"></script>
@@ -264,16 +265,19 @@
       $('#players').append(image_block);
     });
 
-    channel.bind('got_answer_sheet', function(data) {
-      $('<p/>').text("fuckinggggg answesheet: " + data.sheet).appendTo('#scoreboard');
-      $('<p/>').text("fuckinggggg scores: " + data.scores).appendTo('#scoreboard');
-      $('<p/>').text("fuckinggggg players: " + data.players).appendTo('#scoreboard');
-    });
     channel.bind('update_score', function(data) {
       var username = data.username;
       var score = data.score;
       var answer = data.answer;
       $('<p/>').text(username + " answered " + answer + " and has " + score + " points ").appendTo('#scoreboard');
+    });
+    channel.bind('ranking', function(data) {
+      var players = data.message;
+      var arrayLength = players.length;
+      $('#scoreboard').empty();
+      for (var i = 0; i < arrayLength; i++) {
+          $('<p/>').text(players[i].username + " got " + players[i].score).appendTo('#scoreboard');
+      }
     });
 
         $(document).ready(function(){
@@ -300,7 +304,7 @@
         audio.addEventListener('canplaythrough', function() {
            $('#box-loader')[0].className="loader hidden";
            $('#todo')[0].className = "";
-           anim(3);
+           anim(10);
            audio.play();
            audio.volume=0.3;
          }, false);
@@ -323,12 +327,6 @@
             console.log("clicked next question");
             $('#todo')[0].className = "hidden";
             $('#scoreboard').empty();
-             $.ajax({
-                     url: "/games/next_question",
-                     type: "post",
-                     data: {},
-                     dataType: "json"
-                   });
             upCounter();
           })
         }
@@ -369,8 +367,21 @@
             $("#nextButton").hide();
             if (currentquestion == quiz.length) {
                   endQuiz();
+                  $.ajax({
+                          url: "/games/end_quiz",
+                          type: "post",
+                          data: {},
+                          dataType: "json"
+                        }); 
+
               } else {
-                  console.log("nextQuestion")     
+                  console.log("nextQuestion")
+                  $.ajax({
+                          url: "/games/next_question",
+                          type: "post",
+                          data: {},
+                          dataType: "json"
+                        });     
                   nextQuestion();
               }
         }

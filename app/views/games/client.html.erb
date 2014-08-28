@@ -6,13 +6,12 @@
 
 <div id="player_username" style="display: none;"></div>
 <div class="container theframe">
-  this is a dahsboard
 
-  this is where the game will be played by clients
   <div id="frame">
+    <h1>Welcome to QUizzapp Multiplayer! Please insert ans submit your twitter username (Without the @!) </h1>
     <div class="form-horizontal">
         <input name="twitter username" id="username"/>
-        <button id="send_user_name" >button</button>
+        <button id="send_user_name" >Join the Quizparty!</button>
     </div>
   </div>
 </div>
@@ -82,6 +81,15 @@ var counter = 0;
     listenChoices();
   });
 
+  channel.bind('ranking', function(data) {
+    var players = data.message;
+    var arrayLength = players.length;
+    $("#frame").empty();
+    for (var i = 0; i < arrayLength; i++) {
+        $('<p/>').text(players[i].username + " got " + players[i].score).appendTo('#frame');
+    }
+  });
+
 
 
   var listenChoices = function() {
@@ -89,21 +97,21 @@ var counter = 0;
 
     $('#c0').on('click', function(e) {
       console.log("choice 0");
-      $("#frame").empty().text("youn answered");
+      $("#frame").empty().text("you answered        Lets wait for the next question!");
       sendAnswer(username, counter, 0);
 
     });
 
     $('#c1').on('click', function(e) {
       console.log("choice 1");
-      $("#frame").empty().text("youn answered");
+      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
       sendAnswer(username, counter, 1);
       
     });
 
     $('#c2').on('click', function(e) {
       console.log("choice 2");
-      $("#frame").empty().text("youn answered");
+      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
       sendAnswer(username, counter, 2);
       
       
@@ -111,7 +119,7 @@ var counter = 0;
 
     $('#c3').on('click', function(e) {
       console.log("choice 3");
-      $("#frame").empty().text("youn answered");
+      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
       sendAnswer(username, counter, 3);
       
     });
