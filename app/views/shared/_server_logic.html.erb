@@ -5,7 +5,8 @@
       quiz,
       picked,
       sheet,
-      startNum;
+      startNum
+      playerCount=0;
 
 
   Pusher.log = function(message) {
@@ -19,6 +20,9 @@
 
     channel.bind('new_signup', function(data) {
       var user_name = data.message;
+      var answer = data.answer;
+      playerCount = playerCount + 1;
+      $('#playerCounter')[0].innerHTML = playerCount;
       $('#log').append("@ " + user_name+ " just joined the quiz party</br>");
       var image_block = $('<img>').attr('src', "http://twitter.com/api/users/profile_image/"+ user_name +"?size=bigger");
       $('#players').append(image_block);
@@ -27,7 +31,6 @@
     channel.bind('update_score', function(data) {
       var username = data.username;
       var score = data.score;
-      var answer = data.answer;
       $('<p/>').text(username + " answered " + answer + " and has " + score + " points ").appendTo('#scoreboard');
     });
     channel.bind('ranking', function(data) {
