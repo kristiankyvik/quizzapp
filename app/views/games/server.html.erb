@@ -1,11 +1,11 @@
 <div id="quiz-id" style="display: none;"> <%= @quiz_id %> </div>
 <div id="user-id" style="display: none;"> <%= @user_id %> </div>
-
+<div id="banner">
+   <div class="pull-left "  ><h3 > Answers Counter: <span id="answerCounter">0</span></h3></div>
+    <h3 class="pull-right " id="scoreboard" > </h3>
+</div>
 <div class="container theframe" >
-   <!-- //took hidden out -->
   <audio autoplay id="audio" ></audio>
-  
-
   <div class="container mt" id= "start-dash">
     <div class="row">
       <div class="col-lg-10 col-lg-offset-1 centered">
@@ -17,34 +17,31 @@
       </div>
     </div>
   </div>  
-
    <div id="box-loader" class= "hidden">
      <div class="loader" id="circles">
-         <h1>LOADING</h1>
-         <span></span>
-         <span></span>
-         <span></span>
+       <h1>LOADING</h1>
+       <span></span>
+       <span></span>
+       <span></span>
      </div>
   </div>
   <div id="todo" class="hidden">
     <div class="container mt">
-        <div class="row">
-          <div class="col-lg-10 col-lg-offset-1 centered">
-            <div id="countdown"></div>
-              <div id = "frame" class= "row" role = "content" > 
-            </div>
-            <div id="timeup"></div>
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 centered">
+          <div id="countdown"></div>
+          <div id = "frame" class= "row" role = "content" > 
           </div>
+          <div id="timeup"></div>
         </div>
-      </div>     
+      </div>
+    </div>     
 </div>
 
 <div class="row"> 
   <button class="btn pull-right" id="nextQuest" >NEXT QUESTION</button>
-  <div id="scoreboard" class=""></div>
+  
 </div> 
-
-
 
 <% content_for :head do %>
   <style type="text/css">

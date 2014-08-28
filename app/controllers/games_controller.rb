@@ -2,7 +2,6 @@ class GamesController < ApplicationController
 
 
   def index
-
   end
 
   def server
@@ -14,7 +13,7 @@ class GamesController < ApplicationController
   end
 
   def end_quiz
-    ranking = Player.all
+    ranking = Player.all.sort_by{|player| -player[:score]}
     Pusher['server_channel'].trigger('ranking', {
       message: ranking
     })
@@ -46,8 +45,6 @@ class GamesController < ApplicationController
     game = Game.first
     game.cheatsheet = sheet
     game.save
-
-
     render :nothing => true
   end
 
@@ -57,9 +54,6 @@ class GamesController < ApplicationController
     answer = params[:answer]
     game = Game.first
     player = game.players.find_by(username: username)
-    puts "#"*40
-    puts game.cheatsheet[question.to_i]
-    puts answer
     if (game.cheatsheet[question.to_i] == answer.to_i)
       player.score += 1
       player.save!

@@ -1,7 +1,5 @@
 var counter = 0;
 
-
-
   Pusher.log = function(message) {
         if (window.console && window.console.log) {
           window.console.log(message);
@@ -34,27 +32,27 @@ var counter = 0;
   });
 
 
-
   var listenChoices = function() {
+    var message = "You answered! Let´s wait for the next question!"
     var username = $("#player_username")[0].value;
 
     $('#c0').on('click', function(e) {
       console.log("choice 0");
-      $("#frame").empty().text("you answered        Lets wait for the next question!");
+      $("#frame").empty().text(message);
       sendAnswer(username, counter, 0);
 
     });
 
     $('#c1').on('click', function(e) {
       console.log("choice 1");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
+      $("#frame").empty().text(message);
       sendAnswer(username, counter, 1);
       
     });
 
     $('#c2').on('click', function(e) {
       console.log("choice 2");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
+      $("#frame").empty().text(message);
       sendAnswer(username, counter, 2);
       
       
@@ -62,7 +60,7 @@ var counter = 0;
 
     $('#c3').on('click', function(e) {
       console.log("choice 3");
-      $("#frame").empty().text("you answered ........ Lets wait for the next question!");
+      $("#frame").empty().text(message);
       sendAnswer(username, counter, 3);
       
     });
@@ -84,12 +82,6 @@ var sendAnswer = function(username, question_number, choice){
         });
 };
 
-
-var setUpLobby = function() {
-  $("#frame").empty();
-};
-
-
  $("#send_user_name").click(function(){
     var username = $("#username").val();
     console.log(username);
@@ -101,5 +93,5 @@ var setUpLobby = function() {
           data: data,
           dataType: "json"
         });
-    setUpLobby();
+    $("#frame").empty();
     });

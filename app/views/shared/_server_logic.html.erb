@@ -6,7 +6,8 @@
       picked,
       sheet,
       startNum
-      playerCount=0;
+      playerCount=0,
+      answerCount=0;
 
 
   Pusher.log = function(message) {
@@ -29,10 +30,13 @@
     });
 
     channel.bind('update_score', function(data) {
+      $('#scoreboard').empty();
       var username = data.username;
-      var score = data.score;
-      $('<p/>').text(username + " answered " + answer + " and has " + score + " points ").appendTo('#scoreboard');
+      answerCount = answerCount + 1;
+      $('#answerCounter')[0].innerHTML = answerCount;
+      $('<p/>').text("@" + username + " has answered!").appendTo('#scoreboard');
     });
+
     channel.bind('ranking', function(data) {
       var players = data.message;
       var arrayLength = players.length;
@@ -120,13 +124,12 @@
           })
         }
 
-
-
-
         function upCounter() {
             $('#box-loader')[0].className="loader";
             currentquestion++;
             $("#nextButton").hide();
+            answerCount = 0;
+            $('#answerCounter')[0].innerHTML = 0;
             if (currentquestion == quiz.length) {
                   endQuiz();
                   $.ajax({
