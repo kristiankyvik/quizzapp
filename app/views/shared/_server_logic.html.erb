@@ -41,8 +41,9 @@
       var players = data.message;
       var arrayLength = players.length;
       $('#scoreboard').empty();
+      $('#question').empty();
       for (var i = 0; i < arrayLength; i++) {
-          $('<p/>').text(players[i].username + " got " + players[i].score).appendTo('#scoreboard');
+        $('<h1/>').text(players[i].username + " got " + players[i].score).appendTo('#question');
       }
     });
 
@@ -131,6 +132,7 @@
             answerCount = 0;
             $('#answerCounter')[0].innerHTML = 0;
             if (currentquestion == quiz.length) {
+              $('#todo')[0].className = "";
                   endQuiz();
                   $.ajax({
                           url: "/games/end_quiz",

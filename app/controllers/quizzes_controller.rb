@@ -1,4 +1,3 @@
-require 'pry'
 class QuizzesController < ApplicationController
   def new
     @quiz = Quiz.new
