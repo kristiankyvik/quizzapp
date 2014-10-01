@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  
   def index
     @quiz = Quiz.find(params[:quiz_id])
     @user = User.find(params[:user_id])
