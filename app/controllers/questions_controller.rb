@@ -1,4 +1,3 @@
-require 'pry'
 class QuestionsController < ApplicationController
   def index
     @quiz = Quiz.find(params[:quiz_id])
