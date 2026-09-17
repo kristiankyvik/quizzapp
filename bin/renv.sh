@@ -31,6 +31,7 @@ export ZLIB_DEV=$(sed -n 3p "$CACHE")
 export LIBXML2_OUT=$(sed -n 4p "$CACHE")
 export LIBXSLT_OUT=$(sed -n 5p "$CACHE")
 export TZDIR=$(sed -n 6p "$CACHE")/share/zoneinfo
+if [ ! -e /usr/share/zoneinfo ]; then mkdir -p /usr/share && ln -s "$TZDIR" /usr/share/zoneinfo 2>/dev/null || true; fi
 
 exec nix shell -f "$NIXPKGS" \
   ruby_2_3 postgresql_11 libxml2 libxslt zlib openssl tzdata \
