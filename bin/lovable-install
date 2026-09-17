@@ -11,6 +11,17 @@ echo "== starting postgres =="
 bin/pg-start
 
 echo "== preparing databases =="
-bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ exec rake db:migrate db:seed' || true
+bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ exec rake db:migrate'
+# Seed only when the app has no data, so quiz and user IDs (and the URLs that
+# point at them) stay stable across restarts.
+bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ exec rails runner "
+  if Quiz.count.zero?
+    ActiveRecord::Base.connection.execute(%q{TRUNCATE users, quizzes, questions, choices, games, players RESTART IDENTITY CASCADE})
+    load Rails.root.join(%q{db/seeds.rb})
+    puts %q{seeded sample quiz}
+  else
+    puts %q{data already present, skipping seed}
+  end
+"'
 
 echo "install complete"
