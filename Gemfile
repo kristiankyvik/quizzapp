@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
 # Use sqlite3 as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.21.0'
+gem 'nokogiri', '~> 1.8.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -34,7 +35,7 @@ gem 'faker'
 gem 'factory_girl_rails'
 gem 'pry'
 gem 'simple_form'
-gem 'pusher'
+gem 'pusher', '~> 1.4'
 
 gem "capybara", group: [:development, :test]
 gem "database_cleaner", group: [:development, :test]
