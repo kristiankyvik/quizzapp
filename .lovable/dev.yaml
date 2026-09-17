@@ -4,4 +4,4 @@ metadata:
   name: 99-dev
 spec:
   purpose: dev
-  command: "/tmp/renv.sh /dev-server/bin/lovable-dev"
+  command: "/dev-server/bin/lovable-dev"

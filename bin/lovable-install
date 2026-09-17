@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Prepare the app: install gems, start PostgreSQL, create and migrate the DBs.
+set -e
+cd /dev-server
+
+echo "== installing gems =="
+bin/renv.sh bash -c 'cd /dev-server && gem list -i bundler -v 1.17.3 >/dev/null 2>&1 || gem install bundler -v 1.17.3 --no-document'
+bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ install'
+
+echo "== starting postgres =="
+bin/pg-start
+
+echo "== preparing databases =="
+bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ exec rake db:migrate db:seed' || true
+
+echo "install complete"

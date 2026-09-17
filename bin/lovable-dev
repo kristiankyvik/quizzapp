@@ -3,4 +3,10 @@
 set -e
 rm -f /dev-server/tmp/pids/server.pid
 cd /dev-server
-exec bundle _1.17.3_ exec rails server -b 0.0.0.0 -p 8080
+# The sandbox wipes /tmp between sessions; re-provision if the gems are gone.
+if [ ! -d /tmp/ruby23-gems/gems ]; then
+  bin/lovable-install
+else
+  bin/pg-start || true
+fi
+exec bin/renv.sh bash -c 'cd /dev-server && bundle _1.17.3_ exec rails server -b 0.0.0.0 -p 8080'
