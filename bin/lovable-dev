@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Start the Rails app for the Lovable preview using the vintage Ruby toolchain.
+set -e
+rm -f /dev-server/tmp/pids/server.pid
+cd /dev-server
+exec bundle _1.17.3_ exec rails server -b 0.0.0.0 -p 8080
