@@ -16,28 +16,55 @@ var currentquestion = 0,
         return $(document.createElement('div')).text(value).html();
     }
 
+    // Reveals the question and starts the answer countdown. Called once the
+    // song preview is ready, or straight away when no preview is available.
+    var questionStarted = false;
+    var startQuestion = function (playAudio){
+      if (questionStarted) { return; }
+      questionStarted = true;
+      $('#box-loader')[0].className = "loader hidden";
+      $('#todo')[0].className = "";
+      if (playAudio) {
+        try { audio.play(); audio.volume = 0.5; } catch (e) {}
+      }
+      if (currentquestion < quiz.length && first_time == true) {
+        clearAlert();
+        timer = window.setTimeout(showTimeoutBox, 8000);
+      }
+    };
+
     var loadAudio = function (link){
+      questionStarted = false;
+      // Song previews are optional: the public track endpoint now requires a
+      // token, so never let a missing preview block the quiz.
+      var giveUp = window.setTimeout(function(){ startQuestion(false); }, 4000);
+      var ready = function (playAudio) {
+        window.clearTimeout(giveUp);
+        startQuestion(playAudio);
+      };
       $.ajax({
           url: "https://api.spotify.com/v1/tracks/"+link,
           type: 'GET',
           crossDomain : true,
           xhrFields: {
-          },
-          success: function(data) {
+          }
+          })
+        .done(function(data) {
+          if (data && data.preview_url) {
             audio.setAttribute('src', data.preview_url);
             audio.addEventListener('canplaythrough', function() {
-
-              $('#box-loader')[0].className="loader hidden";
-              $('#todo')[0].className = "";
-              audio.play();
-              audio.volume=0.5;
-              if (currentquestion < quiz.length && first_time == true) {
-                clearAlert();
-                timer = window.setTimeout(showTimeoutBox, 8000); 
-              }
+              ready(true);
             }, false);
-              }
-          })
+            audio.addEventListener('error', function() {
+              ready(false);
+            }, false);
+          } else {
+            ready(false);
+          }
+        })
+        .fail(function() {
+          ready(false);
+        });
     };
 
     function setupLayout () {
