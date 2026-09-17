@@ -4,4 +4,4 @@ metadata:
   name: 99-dev
 spec:
   purpose: dev
-  command: "/tmp/renv.sh 'cd /dev-server && bundle _1.17.3_ exec rails server -b 0.0.0.0 -p 8080'"
+  command: "/tmp/renv.sh /dev-server/bin/lovable-dev"
